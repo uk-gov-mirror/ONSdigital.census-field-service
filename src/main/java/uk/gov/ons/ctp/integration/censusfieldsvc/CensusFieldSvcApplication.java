@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +24,9 @@ import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
 import uk.gov.ons.ctp.common.event.SpringRabbitEventSender;
 import uk.gov.ons.ctp.common.jackson.CustomObjectMapper;
+import uk.gov.ons.ctp.common.rest.RestClient;
+import uk.gov.ons.ctp.common.rest.RestClientConfig;
+import uk.gov.ons.ctp.integration.caseapiclient.caseservice.CaseServiceClientServiceImpl;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.AppConfig;
 
 /** The 'main' entry point for the CensusField Svc SpringBoot Application. */
@@ -132,5 +136,14 @@ public class CensusFieldSvcApplication {
     if (useJsonLogging) {
       LoggingConfigs.setCurrent(LoggingConfigs.getCurrent().useJson());
     }
+  }
+
+  @Bean
+  @Qualifier("caseServiceClient")
+  public CaseServiceClientServiceImpl caseServiceClient() {
+    RestClientConfig clientConfig = appConfig.getCaseServiceSettings().getRestClientConfig();
+    RestClient restHelper = new RestClient(clientConfig, httpErrorMapping, defaultHttpStatus);
+    CaseServiceClientServiceImpl csClientServiceImpl = new CaseServiceClientServiceImpl(restHelper);
+    return csClientServiceImpl;
   }
 }

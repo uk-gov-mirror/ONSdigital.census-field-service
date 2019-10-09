@@ -97,7 +97,14 @@ spring:
   application:
     name: ONS CensusFieldService
 
-
+case-service-settings:
+  rest-client-config:
+    username: serco_cks
+    password: temporary
+    scheme: http
+    host: localhost
+    port: 8161
+    
 rabbitmq:
   username: guest
   password: guest
