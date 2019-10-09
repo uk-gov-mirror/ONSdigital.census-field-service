@@ -38,7 +38,7 @@ public class EndpointSecurityTest {
         restTemplate.getForEntity(base.toString() + "/info", String.class);
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertTrue(response.getBody().contains("censusfieldservice"));
+    assertTrue(response.getBody().contains("censusfieldsvc"));
   }
 
   @Test
@@ -49,7 +49,7 @@ public class EndpointSecurityTest {
         restTemplate.getForEntity(base.toString() + "/info", String.class);
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertTrue(response.getBody(), response.getBody().contains("censusfieldservice"));
+    assertTrue(response.getBody(), response.getBody().contains("censusfieldsvc"));
   }
 
   @Test
