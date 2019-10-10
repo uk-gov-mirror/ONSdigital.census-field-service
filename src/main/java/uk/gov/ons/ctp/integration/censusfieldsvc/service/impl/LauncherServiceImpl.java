@@ -24,9 +24,11 @@ public class LauncherServiceImpl implements LauncherService {
             "getEqUrl() calling Case Service to get the details required "
                 + "for launching the questionnaire in EQ");
     CaseContainerDTO caseDetails = caseServiceClient.getCaseById(caseId, false);
-    log.info("The case details received are: " + caseDetails);
+    log.with(caseDetails).debug("The case details received");
+
     QuestionnaireIdDTO questionnaireId = caseServiceClient.getQidByCaseId(caseId);
-    log.info("The questionnaire id received is: " + questionnaireId);
+    log.with(questionnaireId).debug("The questionnaire id received");
+
     return null;
   }
 }

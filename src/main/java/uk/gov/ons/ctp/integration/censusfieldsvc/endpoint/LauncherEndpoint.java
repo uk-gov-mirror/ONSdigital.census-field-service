@@ -47,11 +47,9 @@ public final class LauncherEndpoint implements CTPEndpoint {
       throws CTPException {
     log.with("pathParam", caseId)
         .with("requestParams", requestParamsDTO)
-        .info("Entering GET getCaseById");
+        .info("Entering GET getEqUrlById");
 
     String result = launcherService.getEqUrl(caseId);
-
-    log.with(result).info("The result of calling the launcher service: " + result);
 
     return ResponseEntity.ok(result);
   }
