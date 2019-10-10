@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.ons.ctp.integration.caseapiclient.caseservice.CaseServiceClientServiceImpl;
 import uk.gov.ons.ctp.integration.caseapiclient.caseservice.model.CaseContainerDTO;
+import uk.gov.ons.ctp.integration.caseapiclient.caseservice.model.QuestionnaireIdDTO;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.LauncherService;
 
 @Service
@@ -24,6 +25,8 @@ public class LauncherServiceImpl implements LauncherService {
                 + "for launching the questionnaire in EQ");
     CaseContainerDTO caseDetails = caseServiceClient.getCaseById(caseId, false);
     log.info("The case details received are: " + caseDetails);
+    QuestionnaireIdDTO questionnaireId = caseServiceClient.getQidByCaseId(caseId);
+    log.info("The questionnaire id received is: " + questionnaireId);
     return null;
   }
 }
