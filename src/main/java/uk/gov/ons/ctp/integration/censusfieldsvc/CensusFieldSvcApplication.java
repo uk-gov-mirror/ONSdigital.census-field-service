@@ -27,6 +27,7 @@ import uk.gov.ons.ctp.integration.censusfieldsvc.config.AppConfig;
 
 /** The 'main' entry point for the CensusField Svc SpringBoot Application. */
 @SpringBootApplication
+@EnableSAMLSSOWhenNotInTest
 @IntegrationComponentScan("uk.gov.ons.ctp.integration")
 @ComponentScan(basePackages = {"uk.gov.ons.ctp.integration"})
 @ImportResource("springintegration/main.xml")

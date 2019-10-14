@@ -12,6 +12,9 @@ logging:
   level:
     uk.gov.ons.ctp: INFO
     org.springframework: INFO
+    org.springframework.security.saml: DEBUG
+    com.github.ulisesbocchio: DEBUG
+    PROTOCOL_MESSAGE: DEBUG
   profile: DEV
   useJson: true
 
@@ -80,17 +83,22 @@ management:
       enabled: false
 
 server:
-  port: 8177
-
+  port: 8443
+  ssl:
+    key-store: keystore.p12
+    key-store-password: cfsstore
+    keyStoreType: PKCS12
+    keyAlias: tomcat
+    
 spring:
   mvc:
     servlet:
       path: /
   
-  security:
-    user:
-      name: serco_cks
-      password: temporary
+#  security:
+#    user:
+#      name: serco_cks
+#      password: temporary
   output:
     ansi:
       enabled: never
