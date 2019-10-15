@@ -83,19 +83,22 @@ management:
       enabled: false
 
 server:
-  port: 8177
-
+  port: 8443
+  ssl:
+    key-store: ssl-keystore.p12
+    key-store-password: cfsstore-pw
+    keyStoreType: PKCS12
+    keyAlias: tomcat
+    
 spring:
   mvc:
     servlet:
       path: /
-
   output:
     ansi:
       enabled: never
   application:
     name: ONS CensusFieldService
-
 
 rabbitmq:
   username: guest
