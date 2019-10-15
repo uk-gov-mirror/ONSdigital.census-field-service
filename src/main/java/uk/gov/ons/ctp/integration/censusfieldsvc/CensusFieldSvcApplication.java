@@ -171,7 +171,7 @@ public class CensusFieldSvcApplication {
           .metadataManager()
           .metadataLocations("classpath:/GoogleIDPMetadata-test.field.census.gov.uk.xml")
           .defaultIDP("https://accounts.google.com/o/saml2?idpid=C00n4re6c")
-          .refreshCheckInterval(0)
+          .refreshCheckInterval(60*1000)
           .and()
           .extendedMetadata()
           .idpDiscoveryEnabled(false) // disable IDP selection page
