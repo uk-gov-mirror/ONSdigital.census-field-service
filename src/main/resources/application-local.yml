@@ -89,7 +89,10 @@ server:
     key-store-password: cfsstore-pw
     keyStoreType: PKCS12
     keyAlias: tomcat
-    
+
+sso:
+  useReverseProxy: false
+ 
 spring:
   mvc:
     servlet:

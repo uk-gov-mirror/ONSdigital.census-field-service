@@ -13,4 +13,5 @@ import org.springframework.retry.annotation.EnableRetry;
 public class AppConfig {
   private CaseServiceSettings caseServiceSettings;
   private Logging logging;
+  private SsoConfig sso;
 }
