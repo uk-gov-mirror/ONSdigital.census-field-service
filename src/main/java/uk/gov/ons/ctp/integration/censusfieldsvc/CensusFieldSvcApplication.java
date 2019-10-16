@@ -32,8 +32,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.client.RestTemplate;
 import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
 import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
 import com.godaddy.logging.LoggingConfigs;
-import com.rabbitmq.client.RpcClient;
 import uk.gov.ons.ctp.common.error.RestExceptionHandler;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
@@ -41,7 +42,6 @@ import uk.gov.ons.ctp.common.event.SpringRabbitEventSender;
 import uk.gov.ons.ctp.common.jackson.CustomObjectMapper;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.AppConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.ReverseProxyConfig;
-import uk.gov.ons.ctp.integration.censusfieldsvc.config.SsoConfig;
 
 /** The 'main' entry point for the CensusField Svc SpringBoot Application. */
 @SpringBootApplication
@@ -51,7 +51,7 @@ import uk.gov.ons.ctp.integration.censusfieldsvc.config.SsoConfig;
 @ImportResource("springintegration/main.xml")
 @EnableCaching
 public class CensusFieldSvcApplication {
-//  private static final String PROPERTY_
+  private static final Logger log = LoggerFactory.getLogger(CensusFieldSvcApplication.class);
   
   private AppConfig appConfig;
 
@@ -205,6 +205,7 @@ public class CensusFieldSvcApplication {
       
       if (useReverseProxy) {
         ReverseProxyConfig reverseProxyConfig = appConfig.getSso().getReverseProxy();
+        log.info("Using reverseProxy: " + reverseProxyConfig);
         
         serviceProvider
                .samlContextProviderLb()
