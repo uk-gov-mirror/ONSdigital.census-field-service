@@ -9,11 +9,11 @@ import org.opensaml.util.resource.ResourceException;
 public class StringResource implements Resource {
   private String metadata;
   private DateTime modificationTime = new DateTime();
-  
+
   public StringResource(String metadata) {
     this.metadata = metadata;
   }
-  
+
   @Override
   public String getLocation() {
     return "Metadata from IDPMetadata.xml";
