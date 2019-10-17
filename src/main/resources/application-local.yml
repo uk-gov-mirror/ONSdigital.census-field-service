@@ -83,36 +83,26 @@ management:
       enabled: false
 
 server:
-  port: 8177
+  port: 8443
+  ssl:
+    key-store: ssl-keystore.p12
+    key-store-password: cfsstore-pw
+    keyStoreType: PKCS12
+    keyAlias: tomcat
 
 sso:
-  useReverseProxy: true
-  reverseProxy:
-    scheme: http
-    contextPath: /
-    serverName: localhost
-    serverPort: 8080
-    includeServerPortInRequestURL: true
-
+  useReverseProxy: false
+ 
 spring:
   mvc:
     servlet:
       path: /
-
   output:
     ansi:
       enabled: never
   application:
     name: ONS CensusFieldService
 
-case-service-settings:
-  rest-client-config:
-    username: serco_cks
-    password: temporary
-    scheme: http
-    host: localhost
-    port: 8161
-    
 rabbitmq:
   username: guest
   password: guest
