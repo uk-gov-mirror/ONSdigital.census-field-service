@@ -22,6 +22,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -40,6 +41,9 @@ import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
 import uk.gov.ons.ctp.common.event.SpringRabbitEventSender;
 import uk.gov.ons.ctp.common.jackson.CustomObjectMapper;
+import uk.gov.ons.ctp.common.rest.RestClient;
+import uk.gov.ons.ctp.common.rest.RestClientConfig;
+import uk.gov.ons.ctp.integration.caseapiclient.caseservice.CaseServiceClientServiceImpl;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.AppConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.ReverseProxyConfig;
 
@@ -152,6 +156,15 @@ public class CensusFieldSvcApplication {
     if (useJsonLogging) {
       LoggingConfigs.setCurrent(LoggingConfigs.getCurrent().useJson());
     }
+  }
+
+  @Bean
+  @Qualifier("caseServiceClient")
+  public CaseServiceClientServiceImpl caseServiceClient() {
+    RestClientConfig clientConfig = appConfig.getCaseServiceSettings().getRestClientConfig();
+    RestClient restHelper = new RestClient(clientConfig, httpErrorMapping, defaultHttpStatus);
+    CaseServiceClientServiceImpl csClientServiceImpl = new CaseServiceClientServiceImpl(restHelper);
+    return csClientServiceImpl;
   }
 
   @Configuration
@@ -277,32 +290,4 @@ public class CensusFieldSvcApplication {
       return updatedIdpMetadata;
     }
   }
-
-  //  private int getIntSystemProperty(String propertyName) {
-  //    String propertyValueAsString = getSystemProperty(propertyName);
-  //
-  //    try {
-  //      int propertyValue = Integer.parseInt(propertyValueAsString);
-  //      return propertyValue;
-  //    } catch (NumberFormatException e) {
-  //      throw new IllegalStateException("Failed to parse integer property. Name is '" +
-  // propertyName + "' with value '" + propertyValueAsString + "'");
-  //    }
-  //  }
-  //
-  //  private int getIntSystemProperty(String propertyName) {
-  //    String propertyValueAsString = getSystemProperty(propertyName);
-  //
-  //    int propertyValue = Integer.parseInt(propertyValueAsString);
-  //    return propertyValue;
-  //  }
-  //
-  //  private String getSystemProperty(String propertyName) {
-  //    String propertyValue = System.getProperty(propertyName);
-  //    if (propertyValue == null) {
-  //      throw new IllegalStateException("No system property defined for '" + propertyName + "'");
-  //    }
-  //
-  //    return propertyValue;
-  //  }
 }
