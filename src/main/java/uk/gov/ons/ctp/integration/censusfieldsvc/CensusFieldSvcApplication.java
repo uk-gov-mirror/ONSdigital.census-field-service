@@ -1,5 +1,6 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc;
 
+import com.github.ulisesbocchio.spring.boot.security.saml.bean.override.DSLWebSSOProfileConsumerImpl;
 import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
 import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
 import com.godaddy.logging.Logger;
@@ -35,6 +36,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.saml.websso.WebSSOProfileConsumer;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.ons.ctp.common.error.RestExceptionHandler;
 import uk.gov.ons.ctp.common.event.EventPublisher;
@@ -214,7 +216,9 @@ public class CensusFieldSvcApplication {
           .and()
           .keyManager()
           .privateKeyDERLocation("classpath:/localhost.key.der")
-          .publicKeyPEMLocation("classpath:/localhost.cert");
+          .publicKeyPEMLocation("classpath:/localhost.cert")
+          .and()
+          .ssoProfileConsumer(customWebSSOProfileConsumer());
 
       if (useReverseProxy) {
         ReverseProxyConfig reverseProxyConfig = appConfig.getSso().getReverseProxy();
@@ -228,6 +232,16 @@ public class CensusFieldSvcApplication {
             .serverPort(reverseProxyConfig.getServerPort())
             .includeServerPortInRequestURL(reverseProxyConfig.isIncludeServerPortInRequestURL());
       }
+    }
+
+    // Sets the max authentication age to a really large value.
+    // This prevents spring boot from deciding that authentication is too old and throwing an
+    // exception. It should
+    // mean that we rely on whatever reauthentication period the IDP uses.
+    private WebSSOProfileConsumer customWebSSOProfileConsumer() {
+      DSLWebSSOProfileConsumerImpl consumer = new DSLWebSSOProfileConsumerImpl();
+      consumer.setMaxAuthenticationAge(3600 * 24 * 365 * 50); // Big, but not bigger than max int
+      return consumer;
     }
 
     private String loadIdpMetadata() throws IOException {
