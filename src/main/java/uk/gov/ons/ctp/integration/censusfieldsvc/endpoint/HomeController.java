@@ -5,10 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * @author Ulises Bocchio
- */
-
 import com.github.ulisesbocchio.spring.boot.security.saml.annotation.SAMLUser;
 import com.github.ulisesbocchio.spring.boot.security.saml.user.SAMLUserDetails;
 
