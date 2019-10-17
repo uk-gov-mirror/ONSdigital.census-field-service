@@ -291,17 +291,25 @@ public class CensusFieldSvcApplication {
 
       // Replace all placeholders with actual value from system properties
       for (String placeholderName : placeholderNames) {
-        String placeholderValue = System.getProperty(placeholderName);
-        if (placeholderValue == null) {
-          throw new IllegalStateException(
-              "No system property for metadata placeholder '" + placeholderName + "'");
-        }
-
         String placeholderSpec = "\\$\\{" + placeholderName + "\\}";
+        String placeholderValue = getConfigurationValue(placeholderName);
         updatedIdpMetadata = updatedIdpMetadata.replaceAll(placeholderSpec, placeholderValue);
       }
 
       return updatedIdpMetadata;
+    }
+
+    private String getConfigurationValue(String placeholderName) {
+      String placeholderValue = System.getProperty(placeholderName);
+      if (placeholderValue == null) {
+        placeholderValue = System.getenv(placeholderName);
+      }
+      
+      if (placeholderValue == null) {
+        throw new IllegalStateException(
+            "No system property or environment variable set for metadata placeholder '" + placeholderName + "'");
+      }
+      return placeholderValue;
     }
   }
 }
