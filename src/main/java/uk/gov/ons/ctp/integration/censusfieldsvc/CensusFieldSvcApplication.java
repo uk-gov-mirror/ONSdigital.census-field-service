@@ -1,11 +1,5 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc;
 
-import com.github.ulisesbocchio.spring.boot.security.saml.bean.override.DSLWebSSOProfileConsumerImpl;
-import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
-import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
-import com.godaddy.logging.LoggingConfigs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,9 +8,6 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -37,7 +28,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.saml.websso.WebSSOProfileConsumer;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
+import com.github.ulisesbocchio.spring.boot.security.saml.bean.override.DSLWebSSOProfileConsumerImpl;
+import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
+import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
+import com.godaddy.logging.LoggingConfigs;
 import uk.gov.ons.ctp.common.error.RestExceptionHandler;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
@@ -48,6 +46,7 @@ import uk.gov.ons.ctp.common.rest.RestClientConfig;
 import uk.gov.ons.ctp.integration.caseapiclient.caseservice.CaseServiceClientServiceImpl;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.AppConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.ReverseProxyConfig;
+import uk.gov.ons.ctp.integration.censusfieldsvc.config.SsoConfig;
 
 /** The 'main' entry point for the CensusField Svc SpringBoot Application. */
 @SpringBootApplication
@@ -173,9 +172,6 @@ public class CensusFieldSvcApplication {
   public static class MyServiceProviderConfig extends ServiceProviderConfigurerAdapter {
     @Autowired private AppConfig appConfig;
 
-    @Value("${sso.useReverseProxy}")
-    private boolean useReverseProxy;
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
@@ -220,8 +216,9 @@ public class CensusFieldSvcApplication {
           .and()
           .ssoProfileConsumer(customWebSSOProfileConsumer());
 
-      if (useReverseProxy) {
-        ReverseProxyConfig reverseProxyConfig = appConfig.getSso().getReverseProxy();
+      SsoConfig ssoConfig = appConfig.getSso();
+      if (ssoConfig.isUseReverseProxy()) {
+        ReverseProxyConfig reverseProxyConfig = ssoConfig.getReverseProxy();
         log.info("Using reverseProxy: " + reverseProxyConfig);
 
         serviceProvider
@@ -247,7 +244,7 @@ public class CensusFieldSvcApplication {
     private String loadIdpMetadata() throws IOException {
       String rawIdpMetadata = readResourceFile("IDPMetadata.xml");
 
-      String idpMetadata = replacePlaceholders(rawIdpMetadata);
+      String idpMetadata = replaceMetadataPlaceholders(rawIdpMetadata);
       return idpMetadata;
     }
 
@@ -270,46 +267,26 @@ public class CensusFieldSvcApplication {
     }
 
     /**
-     * Replaces placeholders in the supplied string with actual values from system properties.
+     * Replaces placeholders in the supplied string with actual values from application properties.
      * Placeholders are in the form '${name}'.
      *
-     * @param idpMetadata is the string which requires placeholders to be resolved.
-     * @return the updated String.
-     * @throws IllegalStateException if there is no system property for a named placeholder.
+     * @param rawMetadata is the string which requires placeholders to be resolved.
+     * @return the completed metadata String.
      */
-    private String replacePlaceholders(String idpMetadata) {
-      String updatedIdpMetadata = idpMetadata;
-
-      // Find names of all placeholders, from markers such as '${idpId}'
-      LinkedHashSet<String> placeholderNames = new LinkedHashSet<String>();
-      Pattern placeholderPattern = Pattern.compile("\\$\\{(.*)\\}");
-      Matcher matcher = placeholderPattern.matcher(idpMetadata);
-      while (matcher.find()) {
-        String placeholderName = matcher.group(1);
-        placeholderNames.add(placeholderName);
-      }
-
-      // Replace all placeholders with actual value from system properties
-      for (String placeholderName : placeholderNames) {
-        String placeholderSpec = "\\$\\{" + placeholderName + "\\}";
-        String placeholderValue = getConfigurationValue(placeholderName);
-        updatedIdpMetadata = updatedIdpMetadata.replaceAll(placeholderSpec, placeholderValue);
-      }
-
-      return updatedIdpMetadata;
-    }
-
-    private String getConfigurationValue(String placeholderName) {
-      String placeholderValue = System.getProperty(placeholderName);
-      if (placeholderValue == null) {
-        placeholderValue = System.getenv(placeholderName);
-      }
+    private String replaceMetadataPlaceholders(String rawMetadata) {
+      String metadata = rawMetadata;
       
-      if (placeholderValue == null) {
-        throw new IllegalStateException(
-            "No system property or environment variable set for metadata placeholder '" + placeholderName + "'");
-      }
-      return placeholderValue;
+      SsoConfig ssoConfig = appConfig.getSso();
+      metadata = replacePlaceholder(metadata, "sso.idpId", ssoConfig.getIdpId());
+      metadata = replacePlaceholder(metadata, "sso.metadataCertificate", ssoConfig.getMetadataCertificate());
+
+      return metadata;
+    }
+    
+    private String replacePlaceholder(String metadata, String placeholderName, String placeholderValue) {
+      String placeholderSpec = "\\$\\{" + placeholderName + "\\}";
+      String updatedMetadata = metadata.replaceAll(placeholderSpec, placeholderValue);
+      return updatedMetadata;
     }
   }
 }
