@@ -8,5 +8,6 @@ public class SsoConfig {
   private boolean useReverseProxy;
   @NotBlank private String idpId;
   @NotBlank private String metadataCertificate;
+  private long springMaxAuthenticationAge;
   private ReverseProxyConfig reverseProxy;
 }

@@ -232,11 +232,10 @@ public class CensusFieldSvcApplication {
 
     // Sets the max authentication age to a really large value.
     // This prevents spring boot from deciding that authentication is too old and throwing an
-    // exception. It should
-    // mean that we rely on whatever reauthentication period the IDP uses.
+    // exception. It should mean that we rely on whatever reauthentication period the IDP uses.
     private WebSSOProfileConsumer customWebSSOProfileConsumer() {
       DSLWebSSOProfileConsumerImpl consumer = new DSLWebSSOProfileConsumerImpl();
-      consumer.setMaxAuthenticationAge(3600 * 24 * 365 * 50); // Big, but not bigger than max int
+      consumer.setMaxAuthenticationAge(appConfig.getSso().getSpringMaxAuthenticationAge());
       return consumer;
     }
 
