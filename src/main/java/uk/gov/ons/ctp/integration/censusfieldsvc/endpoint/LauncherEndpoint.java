@@ -25,8 +25,8 @@ public final class LauncherEndpoint implements CTPEndpoint {
   /**
    * Constructor for ContactCentreDataEndpoint
    *
-   * @param caseService is a service layer object that we be doing the processing on behalf of this
-   *     endpoint.
+   * @param launcherService is a service layer object that we be doing the processing on behalf of
+   *     this endpoint.
    */
   @Autowired
   public LauncherEndpoint(final LauncherService launcherService) {

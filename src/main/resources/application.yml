@@ -87,6 +87,8 @@ server:
 
 sso:
   useReverseProxy: true
+  idpId:
+  metadataCertificate:
   reverseProxy:
     scheme: http
     contextPath: /
