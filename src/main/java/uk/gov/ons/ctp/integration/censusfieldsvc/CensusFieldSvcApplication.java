@@ -1,5 +1,11 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc;
 
+import com.github.ulisesbocchio.spring.boot.security.saml.bean.override.DSLWebSSOProfileConsumerImpl;
+import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
+import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
+import com.godaddy.logging.LoggingConfigs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,14 +34,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.saml.websso.WebSSOProfileConsumer;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
-import com.github.ulisesbocchio.spring.boot.security.saml.bean.override.DSLWebSSOProfileConsumerImpl;
-import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
-import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
-import com.godaddy.logging.LoggingConfigs;
 import uk.gov.ons.ctp.common.error.RestExceptionHandler;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
@@ -275,15 +274,18 @@ public class CensusFieldSvcApplication {
      */
     private String replaceMetadataPlaceholders(String rawMetadata) {
       String metadata = rawMetadata;
-      
+
       SsoConfig ssoConfig = appConfig.getSso();
       metadata = replacePlaceholder(metadata, "sso.idpId", ssoConfig.getIdpId());
-      metadata = replacePlaceholder(metadata, "sso.metadataCertificate", ssoConfig.getMetadataCertificate());
+      metadata =
+          replacePlaceholder(
+              metadata, "sso.metadataCertificate", ssoConfig.getMetadataCertificate());
 
       return metadata;
     }
-    
-    private String replacePlaceholder(String metadata, String placeholderName, String placeholderValue) {
+
+    private String replacePlaceholder(
+        String metadata, String placeholderName, String placeholderValue) {
       String placeholderSpec = "\\$\\{" + placeholderName + "\\}";
       String updatedMetadata = metadata.replaceAll(placeholderSpec, placeholderValue);
       return updatedMetadata;
