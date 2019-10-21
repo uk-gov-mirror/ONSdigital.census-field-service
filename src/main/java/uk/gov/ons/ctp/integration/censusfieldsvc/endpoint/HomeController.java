@@ -12,10 +12,11 @@ public class HomeController {
 
   @RequestMapping("/home")
   public ModelAndView home(
-      @SAMLUser SAMLUserDetails user, @RequestParam(required = false) String pppp) {
+      @SAMLUser SAMLUserDetails user, @RequestParam(required = false) String caseId) {
     ModelAndView homeView = new ModelAndView("home");
     homeView.addObject("userId", user.getUsername());
     homeView.addObject("samlAttributes", user.getAttributes());
+    homeView.addObject("caseId", caseId);
     return homeView;
   }
 }
