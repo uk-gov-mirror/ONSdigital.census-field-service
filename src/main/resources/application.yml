@@ -89,6 +89,8 @@ server:
     remote_ip_header: x-forwarded-for
     protocol_header: x-forwarded-proto
 
+security:
+  require-ssl:  true
 
 sso:
   useReverseProxy: true
