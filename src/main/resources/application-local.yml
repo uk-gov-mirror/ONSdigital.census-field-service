@@ -92,6 +92,7 @@ server:
 
 sso:
   useReverseProxy: false
+  entityId: localhost
  
 spring:
   mvc:
