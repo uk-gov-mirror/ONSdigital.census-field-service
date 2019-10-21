@@ -208,7 +208,7 @@ public class CensusFieldSvcApplication {
           .and()
           .metadataManager()
           .metadataProvider(idpMetadataProvider)
-          //.defaultIDP("https://accounts.google.com/o/saml2?idpid=C00n4re6c")
+          // .defaultIDP("https://accounts.google.com/o/saml2?idpid=C00n4re6c")
           .refreshCheckInterval(60 * 1000)
           .and()
           .extendedMetadata()

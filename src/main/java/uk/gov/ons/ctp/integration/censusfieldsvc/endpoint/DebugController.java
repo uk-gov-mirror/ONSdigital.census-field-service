@@ -12,17 +12,18 @@ import org.springframework.web.servlet.ModelAndView;
 public class DebugController {
 
   @RequestMapping("/debug")
-  public ModelAndView home(HttpServletRequest request, @RequestParam(required = false) String caseId) {
+  public ModelAndView home(
+      HttpServletRequest request, @RequestParam(required = false) String caseId) {
     HashMap<String, String> headerMap = new HashMap<>();
-    
+
     Enumeration<String> names = request.getHeaderNames();
     while (names.hasMoreElements()) {
       String headerName = names.nextElement();
       String headerValue = request.getHeader(headerName);
-     
+
       headerMap.put(headerName, headerValue);
-    }    
-    
+    }
+
     ModelAndView homeView = new ModelAndView("debug");
     homeView.addObject("headers", headerMap);
     return homeView;
