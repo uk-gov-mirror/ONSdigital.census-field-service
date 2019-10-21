@@ -180,6 +180,8 @@ public class CensusFieldSvcApplication {
           .permitAll()
           .antMatchers("/info")
           .permitAll()
+          .antMatchers("/debug")
+          .permitAll()
           .antMatchers("/hello3")
           .permitAll()
           .regexMatchers("/anon/hello")
