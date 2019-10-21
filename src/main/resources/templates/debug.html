@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Debug Page</title>
+</head>
+<body>
+<h1>Debug page</h1>
+
+<table title="Headers" border="1">
+    <thead>
+    <tr>
+        <td colspan="2" style="text-align: center"><b>Headers</b></td>
+    </tr>
+    <tr>
+        <td><b>Header Name</b></td>
+        <td><b>Value</b></td>
+    </tr>
+    </thead>
+    <tr th:each="attribute : ${headers}">
+        <td th:text="${attribute.key}">key</td>
+        <td th:text="${attribute.value}">value</td>
+    </tr>
+</table>
+
+</body>
+</html>
