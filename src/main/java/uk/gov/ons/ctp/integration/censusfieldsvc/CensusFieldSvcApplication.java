@@ -188,13 +188,15 @@ public class CensusFieldSvcApplication {
 
     @Override
     public void configure(ServiceProviderBuilder serviceProvider) throws Exception {
+      SsoConfig ssoConfig = appConfig.getSso();
+
       String idpMetadata = loadIdpMetadata();
       ResourceBackedMetadataProvider idpMetadataProvider =
           new ResourceBackedMetadataProvider(null, new StringResource(idpMetadata));
 
       serviceProvider
           .metadataGenerator()
-          .entityId("localhost")
+          .entityId(ssoConfig.getEntityId())
           .and()
           .sso()
           .and()
@@ -203,7 +205,7 @@ public class CensusFieldSvcApplication {
           .and()
           .metadataManager()
           .metadataProvider(idpMetadataProvider)
-          .defaultIDP("https://accounts.google.com/o/saml2?idpid=C00n4re6c")
+          //.defaultIDP("https://accounts.google.com/o/saml2?idpid=C00n4re6c")
           .refreshCheckInterval(60 * 1000)
           .and()
           .extendedMetadata()
@@ -215,7 +217,6 @@ public class CensusFieldSvcApplication {
           .and()
           .ssoProfileConsumer(customWebSSOProfileConsumer());
 
-      SsoConfig ssoConfig = appConfig.getSso();
       if (ssoConfig.isUseReverseProxy()) {
         ReverseProxyConfig reverseProxyConfig = ssoConfig.getReverseProxy();
         log.info("Using reverseProxy: " + reverseProxyConfig);
