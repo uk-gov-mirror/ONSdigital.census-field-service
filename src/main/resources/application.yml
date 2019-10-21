@@ -89,6 +89,7 @@ sso:
   useReverseProxy: true
   idpId:
   entityId:
+  entityBaseURL:
   metadataCertificate:
   springMaxAuthenticationAge: 1211400 # 14 days and half an hour
   reverseProxy:

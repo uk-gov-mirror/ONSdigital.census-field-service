@@ -93,7 +93,8 @@ server:
 sso:
   useReverseProxy: false
   entityId: localhost
- 
+  entityBaseURL: https://localhost:8443
+
 spring:
   mvc:
     servlet:
