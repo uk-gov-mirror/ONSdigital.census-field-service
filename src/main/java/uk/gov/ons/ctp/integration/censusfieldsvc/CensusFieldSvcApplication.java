@@ -197,6 +197,7 @@ public class CensusFieldSvcApplication {
       serviceProvider
           .metadataGenerator()
           .entityId(ssoConfig.getEntityId())
+          .entityBaseURL(ssoConfig.getEntityBaseURL())
           .and()
           .sso()
           .and()
