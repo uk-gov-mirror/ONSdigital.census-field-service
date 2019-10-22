@@ -199,7 +199,7 @@ public class CensusFieldSvcApplication {
       serviceProvider
           .metadataGenerator()
           .entityId(ssoConfig.getEntityId())
-          //PMB delete?  //.entityBaseURL(ssoConfig.getEntityBaseURL())
+          .entityBaseURL(ssoConfig.getEntityBaseURL())
           .and()
 //PMB          .sso()
 //          .and()
