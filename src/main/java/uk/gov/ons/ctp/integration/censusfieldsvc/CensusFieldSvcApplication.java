@@ -199,16 +199,16 @@ public class CensusFieldSvcApplication {
       serviceProvider
           .metadataGenerator()
           .entityId(ssoConfig.getEntityId())
-          .entityBaseURL(ssoConfig.getEntityBaseURL())
+          //PMB delete?  //.entityBaseURL(ssoConfig.getEntityBaseURL())
           .and()
-          .sso()
-          .and()
+//PMB          .sso()
+//          .and()
           .logout()
           .defaultTargetURL("/afterlogout")
           .and()
           .metadataManager()
           .metadataProvider(idpMetadataProvider)
-          // .defaultIDP("https://accounts.google.com/o/saml2?idpid=C00n4re6c")
+          //PMB delete? .defaultIDP("https://accounts.google.com/o/saml2?idpid=C00n4re6c")
           .refreshCheckInterval(60 * 1000)
           .and()
           .extendedMetadata()
@@ -243,6 +243,13 @@ public class CensusFieldSvcApplication {
       return consumer;
     }
 
+    /**
+     * This method loads the G-suite IDP metadata. It reads the contents of a template
+     * metadata file and replaces some placeholders with the actual runtime values.
+     * 
+     * @return a String containing the G-suite IDP metadata.
+     * @throws IOExceptionif there is a problem reading the metadata file.
+     */
     private String loadIdpMetadata() throws IOException {
       String rawIdpMetadata = readResourceFile("IDPMetadata.xml");
 
