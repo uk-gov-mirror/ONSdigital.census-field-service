@@ -84,6 +84,7 @@ management:
 
 server:
   port: 8177
+  use-forward-headers: true
 
 sso:
   useReverseProxy: true
