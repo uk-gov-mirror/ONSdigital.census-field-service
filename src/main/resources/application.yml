@@ -84,16 +84,6 @@ management:
 
 server:
   port: 8177
-  ssl:
-    key-store: classpath:ssl-keystore.p12
-    key-store-password: cfsstore-pw
-    keyStoreType: PKCS12
-    keyAlias: tomcat
-  use-forward-headers: true
-  tomcat:
-    remote_ip_header: x-forwarded-for
-    protocol_header: x-forwarded-proto
-
 
 sso:
   useReverseProxy: true
