@@ -1,5 +1,6 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc.config;
 
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,9 +10,9 @@ import lombok.ToString;
 @Data
 @ToString
 public class ReverseProxyConfig {
-  private String scheme;
-  private String contextPath;
-  private String serverName;
+  @NotBlank private String scheme;
+  @NotBlank private String contextPath;
+  @NotBlank private String serverName;
   private int serverPort;
   private boolean includeServerPortInRequestURL;
 }

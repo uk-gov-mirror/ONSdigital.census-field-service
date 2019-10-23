@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.ons.ctp.common.endpoint.CTPEndpoint;
 import uk.gov.ons.ctp.common.error.CTPException;
+import uk.gov.ons.ctp.integration.caseapiclient.caseservice.model.EventDTO;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.LauncherService;
-import uk.gov.ons.ctp.integration.contactcentresvc.representation.CaseRequestDTO;
 
 @RestController
 @RequestMapping(value = "/case", produces = "application/json")
@@ -43,7 +43,8 @@ public final class LauncherEndpoint implements CTPEndpoint {
    */
   @RequestMapping(value = "/{caseId}", method = RequestMethod.GET)
   public ResponseEntity<String> getEqUrlById(
-      @PathVariable("caseId") final UUID caseId, @Valid CaseRequestDTO requestParamsDTO)
+      @PathVariable("caseId") final UUID caseId,
+      @Valid EventDTO requestParamsDTO) /* request params was of type CaseRequestDTO */
       throws CTPException {
     log.with("pathParam", caseId)
         .with("requestParams", requestParamsDTO)
