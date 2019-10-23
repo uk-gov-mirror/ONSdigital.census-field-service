@@ -2,6 +2,24 @@
 Census Integration team's Field Proxy Service
 
 
+## Spring boot security SAML
+
+### Self signed keys
+
+The extension makes use of a self signed private/public key pair.
+
+These can be regenerated with the following commands:
+
+    # KEY AND CERT
+    cd census-field-service/src/main/resources
+    openssl genrsa -out localhost.key 2048
+    openssl req -new -x509 -key localhost.key -out localhost.pem -days 3650 -subj /CN=localhost
+    # PEM KEY to DER
+    openssl pkcs8 -topk8 -inform PEM -outform DER -in  localhost.key -out  localhost.key.der -nocrypt
+    # Finish and cleanup
+    mv localhost.pem localhost.cert 
+    rm localhost.key
+
 ## Links
 
 ### Spring security SAML extension
@@ -10,7 +28,7 @@ Spring security SAML extension: https://docs.spring.io/spring-security-saml/docs
 
 This extension is nowhere near as simple to use as advertised. Here is a page describing how to use Spring security: https://medium.com/@viraj.rajaguru/how-to-use-spring-saml-extension-7ffe0dd38465
 
-### Spring boot security saml
+### Spring boot security SAML
 
 This project is a library which sits over Spring security SAML, and essentially provides a much simpler
 way to configure the Spring security SAML extension.
