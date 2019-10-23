@@ -1,18 +1,25 @@
 # census-field-service
 Census Integration team's Field Proxy Service
 
+## Running in a development environment
 
-## HTTPS
+### Starting CFS
+
+To run the census-field-service you can run CensusFieldSvcApplication with the following VM arguments:
+
+    -Dspring.profiles.active=local
+    -Dsso.idpId=C00n4re6c 
+    -Dsso.metadataCertificate=MIIDdD....
+
+### HTTPS & SSL keystore
 
 For testing on localhost you'll need to run the service using https. In Eclipse run the service with the VM argument: '-Dspring.profiles.active=local' 
 
-### SSL keystore
-
-The keystore has been created by:
+The keystore has been created by the following commands. Note that the localhost config assumes a password of 'cfsstore-pw':
   
-    $ cd ~/source/census-field-service
+    $ cd ~/source/census-field-service/src/main/resources.
     
-    $ keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 4096 -keystore ssl-keystore.p12 -validity 3650
+    $ keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 4096 -keystore localhost-ssl-keystore.p12 -validity 3650
     Enter keystore password:  
     Re-enter new password: 
     What is your first and last name?

@@ -16,7 +16,7 @@ import uk.gov.ons.ctp.integration.censusfieldsvc.service.LauncherService;
 import uk.gov.ons.ctp.integration.contactcentresvc.representation.CaseRequestDTO;
 
 @RestController
-@RequestMapping(value = "/", produces = "application/json")
+@RequestMapping(value = "/case", produces = "application/json")
 public final class LauncherEndpoint implements CTPEndpoint {
   private static final Logger log = LoggerFactory.getLogger(LauncherEndpoint.class);
 

@@ -6,6 +6,9 @@ import org.joda.time.DateTime;
 import org.opensaml.util.resource.Resource;
 import org.opensaml.util.resource.ResourceException;
 
+/**
+ * This class allows a String value to be fed into a SAML metadata provider.
+ */
 public class StringResource implements Resource {
   private String metadata;
   private DateTime modificationTime = new DateTime();
