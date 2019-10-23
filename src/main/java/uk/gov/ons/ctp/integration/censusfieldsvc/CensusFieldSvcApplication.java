@@ -35,6 +35,8 @@ import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.saml.websso.WebSSOProfileConsumer;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import uk.gov.ons.ctp.common.error.RestExceptionHandler;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
@@ -167,6 +169,15 @@ public class CensusFieldSvcApplication {
     return csClientServiceImpl;
   }
 
+  // Register HTML pages
+  @Configuration
+  public static class MvcConfig implements WebMvcConfigurer {
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+      registry.addViewController("/completed").setViewName("completed");
+    }
+  }
+
   @Configuration
   public static class MyServiceProviderConfig extends ServiceProviderConfigurerAdapter {
     @Autowired private AppConfig appConfig;
@@ -174,17 +185,9 @@ public class CensusFieldSvcApplication {
     @Override
     public void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
-          .regexMatchers("/")
-          .permitAll()
-          .antMatchers("/completed")
-          .permitAll()
           .antMatchers("/info")
           .permitAll()
-          .antMatchers("/debug")
-          .permitAll()
-          .antMatchers("/hello3")
-          .permitAll()
-          .regexMatchers("/anon/hello")
+          .antMatchers("/completed")
           .permitAll();
     }
 
@@ -201,14 +204,11 @@ public class CensusFieldSvcApplication {
           .entityId(ssoConfig.getEntityId())
           .entityBaseURL(ssoConfig.getEntityBaseURL())
           .and()
-//PMB          .sso()
-//          .and()
           .logout()
           .defaultTargetURL("/afterlogout")
           .and()
           .metadataManager()
           .metadataProvider(idpMetadataProvider)
-          //PMB delete? .defaultIDP("https://accounts.google.com/o/saml2?idpid=C00n4re6c")
           .refreshCheckInterval(60 * 1000)
           .and()
           .extendedMetadata()
@@ -244,9 +244,9 @@ public class CensusFieldSvcApplication {
     }
 
     /**
-     * This method loads the G-suite IDP metadata. It reads the contents of a template
-     * metadata file and replaces some placeholders with the actual runtime values.
-     * 
+     * This method loads the G-suite IDP metadata. It reads the contents of a template metadata file
+     * and replaces some placeholders with the actual runtime values.
+     *
      * @return a String containing the G-suite IDP metadata.
      * @throws IOExceptionif there is a problem reading the metadata file.
      */

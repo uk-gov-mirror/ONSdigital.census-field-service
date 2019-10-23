@@ -24,7 +24,7 @@
           <fieldName>created</fieldName>
         </timestamp>
         <globalCustomFields>
-          <customFields>{"service":"ccsvc"}</customFields>
+          <customFields>{"service":"fsvc"}</customFields>
         </globalCustomFields>
         <message>
           <fieldName>event</fieldName>

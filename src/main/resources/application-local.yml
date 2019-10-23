@@ -1,7 +1,7 @@
 server:
   port: 8443
   ssl:
-    key-store: classpath:ssl-keystore.p12
+    key-store: classpath:localhost-ssl-keystore.p12
     key-store-password: cfsstore-pw
     keyStoreType: PKCS12
     keyAlias: tomcat
