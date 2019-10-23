@@ -47,6 +47,8 @@ Configuration parameters: https://github.com/ulisesbocchio/spring-boot-security-
 
 How to enable SAML: https://cloud.google.com/identity-platform/docs/how-to-enable-application-for-saml
 
+Description of G Suite SAML error messages: https://support.google.com/a/answer/6301076?hl=en
+
 
 ## Field service in dev environment
 
