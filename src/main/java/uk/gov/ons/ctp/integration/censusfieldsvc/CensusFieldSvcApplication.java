@@ -177,7 +177,7 @@ public class CensusFieldSvcApplication {
       registry.addViewController("/completed").setViewName("completed");
     }
   }
-  
+
   @Configuration
   public static class MyServiceProviderConfig extends ServiceProviderConfigurerAdapter {
     @Autowired private AppConfig appConfig;
@@ -244,9 +244,9 @@ public class CensusFieldSvcApplication {
     }
 
     /**
-     * This method loads the G-suite IDP metadata. It reads the contents of a template
-     * metadata file and replaces some placeholders with the actual runtime values.
-     * 
+     * This method loads the G-suite IDP metadata. It reads the contents of a template metadata file
+     * and replaces some placeholders with the actual runtime values.
+     *
      * @return a String containing the G-suite IDP metadata.
      * @throws IOExceptionif there is a problem reading the metadata file.
      */
