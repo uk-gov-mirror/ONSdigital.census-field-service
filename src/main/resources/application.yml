@@ -10,10 +10,11 @@ info:
 # ie -Dlogging.level.org.springframework=DEBUG
 logging:
   level:
-    uk.gov.ons.ctp: INFO
+    uk.gov.ons.ctp.integration.censusfieldsvc: INFO
+    uk.gov.ons.ctp.common: INFO
     org.springframework: INFO
-    org.springframework.security.saml: DEBUG
-    com.github.ulisesbocchio: DEBUG
+    org.springframework.security.saml: INFO
+    com.github.ulisesbocchio: INFO
     PROTOCOL_MESSAGE: DEBUG
   profile: DEV
   useJson: true

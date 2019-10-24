@@ -2,6 +2,9 @@ logging:
   level:
     uk.gov.ons.ctp.integration.censusfieldsvc: INFO
     uk.gov.ons.ctp.common: INFO
-    org.springframework: OFF
+    org.springframework: WARN
+    org.springframework.security.saml: WARN
+    com.github.ulisesbocchio: WARN
+    PROTOCOL_MESSAGE: WARN
   profile: CLOUD
   useJson: true

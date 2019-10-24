@@ -4,9 +4,6 @@ import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.ToString;
 
-// import net.sourceforge.cobertura.CoverageIgnore;
-
-// @CoverageIgnore
 @Data
 @ToString
 public class ReverseProxyConfig {

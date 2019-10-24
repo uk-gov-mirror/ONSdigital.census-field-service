@@ -209,7 +209,7 @@ public class CensusFieldSvcApplication {
           .and()
           .metadataManager()
           .metadataProvider(idpMetadataProvider)
-          .refreshCheckInterval(60 * 1000)
+          .refreshCheckInterval(-1)
           .and()
           .extendedMetadata()
           .idpDiscoveryEnabled(false) // disable IDP selection page
