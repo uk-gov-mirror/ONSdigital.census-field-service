@@ -1,7 +1,3 @@
 logging:
-  level:
-    uk.gov.ons.ctp.integration.censusfieldsvc: DEBUG
-    uk.gov.ons.ctp.common: DEBUG
-    org.springframework: WARN
   profile: DEV
   useJson: false
