@@ -90,7 +90,7 @@ server:
 sso:
   domain:
   useReverseProxy: true
-  idpBaseURL:
+  idpBaseURL: https://accounts.google.com/o/saml2
   idpId:
   entityId: ${sso.domain}
   entityBaseURL: https://${sso.domain}
