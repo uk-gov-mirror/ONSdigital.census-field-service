@@ -7,6 +7,8 @@ logging:
     com.github.ulisesbocchio: DEBUG
     PROTOCOL_MESSAGE: DEBUG
     
+domain: localhost
+
 server:
   port: 8443
   ssl:  # Enable ssl, as the G Suite IDP will only work with a https SAML endpoint
@@ -16,7 +18,6 @@ server:
     keyAlias: tomcat
 
 sso:
-  domain: localhost
   useReverseProxy: false
-  entityId: ${sso.domain}
-  entityBaseURL: https://${sso.domain}:8443
+  entityId: ${domain}
+  entityBaseURL: https://${domain}:8443
