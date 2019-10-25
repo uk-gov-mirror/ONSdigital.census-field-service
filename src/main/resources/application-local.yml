@@ -16,6 +16,7 @@ server:
     keyAlias: tomcat
 
 sso:
+  domain: localhost
   useReverseProxy: false
-  entityId: localhost
-  entityBaseURL: https://localhost:8443
+  entityId: ${sso.domain}
+  entityBaseURL: https://${sso.domain}:8443

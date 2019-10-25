@@ -286,6 +286,7 @@ public class CensusFieldSvcApplication {
       String metadata = rawMetadata;
 
       SsoConfig ssoConfig = appConfig.getSso();
+      metadata = replacePlaceholder(metadata, "sso.idpBaseURL", ssoConfig.getIdpBaseURL());
       metadata = replacePlaceholder(metadata, "sso.idpId", ssoConfig.getIdpId());
       metadata =
           replacePlaceholder(
