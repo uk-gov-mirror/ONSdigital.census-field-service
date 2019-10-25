@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class SsoConfig {
+  @NotBlank private String domain;
   private boolean useReverseProxy;
   @NotBlank private String idpBaseURL;
   @NotBlank private String idpId;

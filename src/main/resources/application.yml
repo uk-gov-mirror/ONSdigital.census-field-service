@@ -88,17 +88,18 @@ server:
   use-forward-headers: true  # needed for SAML/SSO to work!
 
 sso:
+  domain:
   useReverseProxy: true
   idpBaseURL:
   idpId:
-  entityId:
-  entityBaseURL:
+  entityId: ${sso.domain}
+  entityBaseURL: https://${sso.domain}
   metadataCertificate:
   springMaxAuthenticationAge: 1252800  # 14.5 days, to make sure Spring timeout greater than the IDP timeout
   reverseProxy:
     scheme: https
     contextPath: /
-    serverName: localhost
+    serverName: ${sso.domain}
     serverPort: 443
     includeServerPortInRequestURL: false
 
