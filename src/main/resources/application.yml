@@ -89,6 +89,7 @@ server:
 
 sso:
   useReverseProxy: true
+  idpBaseURL:
   idpId:
   entityId:
   entityBaseURL:

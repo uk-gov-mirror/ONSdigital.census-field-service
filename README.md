@@ -61,6 +61,7 @@ An unprotected field service page: https://dev-fieldservice.fwmt-gateway.census-
 To run the census-field-service you can run CensusFieldSvcApplication with the following VM arguments:
 
     -Dspring.profiles.active=local
+    -Dsso.idpBaseURL=https://accounts.google.com/o/saml2 
     -Dsso.idpId=C00n4re6c 
     -Dsso.metadataCertificate=MIIDdD....
 
