@@ -1,9 +1,5 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc.endpoint;
 
-import com.github.ulisesbocchio.spring.boot.security.saml.annotation.SAMLUser;
-import com.github.ulisesbocchio.spring.boot.security.saml.user.SAMLUserDetails;
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,9 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.github.ulisesbocchio.spring.boot.security.saml.annotation.SAMLUser;
+import com.github.ulisesbocchio.spring.boot.security.saml.user.SAMLUserDetails;
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
 import uk.gov.ons.ctp.common.endpoint.CTPEndpoint;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.LauncherService;
+import uk.gov.ons.ctp.integration.censusfieldsvc.service.SurveyLaunchedService;
 
 @RestController
 @RequestMapping(value = "/launch", produces = "application/json")
@@ -23,6 +24,8 @@ public final class LaunchEQEndpoint implements CTPEndpoint {
   private static final Logger log = LoggerFactory.getLogger(LaunchEQEndpoint.class);
 
   @Autowired private LauncherService launcherService;
+
+  @Autowired private SurveyLaunchedService surveyLaunchedService;
 
   /**
    * Redirects the caller to start EQ for the supplied case. If there is no user signed in then the
@@ -51,6 +54,11 @@ public final class LaunchEQEndpoint implements CTPEndpoint {
 
     HttpHeaders headers = new HttpHeaders();
     headers.add("Location", targetUrl);
-    return new ResponseEntity<String>(headers, HttpStatus.TEMPORARY_REDIRECT);
+    ResponseEntity<String> response = new ResponseEntity<String>(headers, HttpStatus.TEMPORARY_REDIRECT);
+    
+    String questionnaireId = "666"; //TODO: 
+    surveyLaunchedService.surveyLaunched(questionnaireId, caseId, user.getUsername());    
+    
+    return response;
   }
 }

@@ -128,7 +128,3 @@ rabbitmq:
   host: localhost
   port: 35672
   virtual-host: /
-  
-queueconfig:
-  event-exchange: events
-  dead-letter-exchange: events.deadletter.exchange
