@@ -175,6 +175,10 @@ public class CensusFieldSvcApplication {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
       registry.addViewController("/completed").setViewName("completed");
+      registry.addViewController("/error").setViewName("error");
+      registry.addViewController("/questionnaireCompleted").setViewName("questionnaireCompleted");
+      registry.addViewController("/questionnaireSaved").setViewName("questionnaireSaved");
+      registry.addViewController("/questionnaireInactive").setViewName("questionnaireInactive");
     }
   }
 
