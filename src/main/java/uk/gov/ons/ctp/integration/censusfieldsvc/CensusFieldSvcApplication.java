@@ -61,9 +61,6 @@ public class CensusFieldSvcApplication {
 
   private AppConfig appConfig;
 
-  @Value("${queueconfig.event-exchange}")
-  private String eventExchange;
-
   // Table to convert from AddressIndex response status values to values that can be returned to the
   // invoker of this service
   private static final HashMap<HttpStatus, HttpStatus> httpErrorMapping;
@@ -133,23 +130,6 @@ public class CensusFieldSvcApplication {
     return new RestExceptionHandler();
   }
 
-  /**
-   * Bean used to publish asynchronous event messages
-   *
-   * @param connectionFactory RabbitMQ connection settings and strategies
-   * @return the event publisher
-   */
-  @Bean
-  public EventPublisher eventPublisher(final ConnectionFactory connectionFactory) {
-    final var template = new RabbitTemplate(connectionFactory);
-    template.setMessageConverter(new Jackson2JsonMessageConverter());
-    template.setExchange("events");
-    template.setChannelTransacted(true);
-
-    EventSender sender = new SpringRabbitEventSender(template);
-    return new EventPublisher(sender);
-  }
-
   @Value("#{new Boolean('${logging.useJson}')}")
   private boolean useJsonLogging;
 
@@ -167,6 +147,27 @@ public class CensusFieldSvcApplication {
     RestClient restHelper = new RestClient(clientConfig, httpErrorMapping, defaultHttpStatus);
     CaseServiceClientServiceImpl csClientServiceImpl = new CaseServiceClientServiceImpl(restHelper);
     return csClientServiceImpl;
+  }
+
+  /**
+   * Bean used to publish asynchronous event messages
+   *
+   * @param connectionFactory RabbitMQ connection settings and strategies
+   * @return the event publisher
+   */
+  @Bean
+  public EventPublisher eventPublisher(final RabbitTemplate rabbitTemplate) {
+    EventSender sender = new SpringRabbitEventSender(rabbitTemplate);
+    return new EventPublisher(sender);
+  }
+
+  @Bean
+  public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
+    final var template = new RabbitTemplate(connectionFactory);
+    template.setMessageConverter(new Jackson2JsonMessageConverter());
+    template.setExchange("events");
+    template.setChannelTransacted(true);
+    return template;
   }
 
   // Register HTML pages

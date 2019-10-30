@@ -129,7 +129,6 @@ rabbitmq:
   port: 35672
   virtual-host: /
   
-  
 keystore: '{
   "keys": {
     "fdc4d96ce6a8fac00d3eba192af1574ffda1c7f0": {
@@ -148,7 +147,3 @@ keystore: '{
 eq:
   host: www.google.com
   
-queueconfig:
-  event-exchange: events
-  dead-letter-exchange: events.deadletter.exchange
-
