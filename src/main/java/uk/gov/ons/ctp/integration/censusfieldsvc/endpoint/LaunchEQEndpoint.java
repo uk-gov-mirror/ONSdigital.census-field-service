@@ -1,12 +1,8 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc.endpoint;
 
-<<<<<<< HEAD
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.time.LocalTime;
 import java.util.Date;
-=======
->>>>>>> master
 import java.util.UUID;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-<<<<<<< HEAD
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
-=======
->>>>>>> master
 import com.github.ulisesbocchio.spring.boot.security.saml.annotation.SAMLUser;
 import com.github.ulisesbocchio.spring.boot.security.saml.user.SAMLUserDetails;
 import com.godaddy.logging.Logger;
@@ -27,12 +20,9 @@ import uk.gov.ons.ctp.common.endpoint.CTPEndpoint;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.AppConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.LauncherService;
-<<<<<<< HEAD
+import uk.gov.ons.ctp.integration.censusfieldsvc.service.SurveyLaunchedService;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.impl.FieldServiceException;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.impl.FieldServiceException.Fault;
-=======
-import uk.gov.ons.ctp.integration.censusfieldsvc.service.SurveyLaunchedService;
->>>>>>> master
 
 @RestController
 @RequestMapping(value = "/launch", produces = "application/json")
