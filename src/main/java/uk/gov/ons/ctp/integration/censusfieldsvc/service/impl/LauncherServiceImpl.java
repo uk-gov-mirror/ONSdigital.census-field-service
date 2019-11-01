@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.model.Channel;
 import uk.gov.ons.ctp.common.model.Language;
+import uk.gov.ons.ctp.common.model.Source;
 import uk.gov.ons.ctp.integration.caseapiclient.caseservice.CaseServiceClientServiceImpl;
 import uk.gov.ons.ctp.integration.caseapiclient.caseservice.model.CaseContainerDTO;
 import uk.gov.ons.ctp.integration.caseapiclient.caseservice.model.QuestionnaireIdDTO;
@@ -31,9 +32,7 @@ public class LauncherServiceImpl implements LauncherService {
 
   @Override
   public String getEqUrl(String userId, UUID caseId) throws FieldServiceException {
-    log.
-   with("userId", userId).with("caseId", caseId)
-        .debug("Entering getEqUrl()");
+    log.with("userId", userId).with("caseId", caseId).debug("Entering getEqUrl()");
     CaseContainerDTO caseDetails = null;
     QuestionnaireIdDTO questionnaireIdDto = null;
 
@@ -44,7 +43,9 @@ public class LauncherServiceImpl implements LauncherService {
       questionnaireIdDto = caseServiceClient.getQidByCaseId(caseId);
       log.with(questionnaireIdDto).debug("The questionnaire id received");
       if (!questionnaireIdDto.isActive()) {
-        log.with("caseId", caseId).with("questionnaireId", questionnaireIdDto.getQuestionnaireId()).info("Questionnaire is inactive");
+        log.with("caseId", caseId)
+            .with("questionnaireId", questionnaireIdDto.getQuestionnaireId())
+            .info("Questionnaire is inactive");
         throw new FieldServiceException(Fault.QUESTIONNAIRE_INACTIVE);
       }
       log.with("Case", caseDetails).info("Case details");
@@ -74,15 +75,17 @@ public class LauncherServiceImpl implements LauncherService {
 
     String encryptedPayload = "";
     try {
-        encryptedPayload = eqLaunchService.getEqLaunchJwe(
-            Language.ENGLISH,
-            Channel.FIELD,
-            caseDetails,
-            userId,
-            questionnaireIdDto.getQuestionnaireId(),
-            accountServiceUrl,
-            accountServiceLogoutUrl,
-            appConfig.getKeystore());
+      encryptedPayload =
+          eqLaunchService.getEqLaunchJwe(
+              Language.ENGLISH,
+              Source.FIELD_SERVICE,
+              Channel.FIELD,
+              caseDetails,
+              userId,
+              questionnaireIdDto.getQuestionnaireId(),
+              accountServiceUrl,
+              accountServiceLogoutUrl,
+              appConfig.getKeystore());
     } catch (CTPException e) {
       log.with(e).error("Failed to create JWE payload for eq launch");
       throw new FieldServiceException(Fault.SYSTEM_ERROR);

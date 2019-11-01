@@ -1,11 +1,10 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc.service.impl;
 
-import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventPublisher.Channel;
@@ -21,11 +20,13 @@ public class SurveyLaunchedServiceImpl implements SurveyLaunchedService {
   @Autowired private EventPublisher eventPublisher;
 
   @Override
-  public void surveyLaunched(String questionnaireId, UUID caseId, String userId) throws CTPException {
+  public void surveyLaunched(String questionnaireId, UUID caseId, String userId)
+      throws CTPException {
 
     log.with("questionnaireId", questionnaireId)
-    .with("caseId", caseId)
-    .with("userId", userId).info("Generating SurveyLaunched event");
+        .with("caseId", caseId)
+        .with("userId", userId)
+        .info("Generating SurveyLaunched event");
 
     SurveyLaunchedResponse response =
         SurveyLaunchedResponse.builder()
