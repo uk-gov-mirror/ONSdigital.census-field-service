@@ -82,11 +82,12 @@ public class LauncherServiceImpl implements LauncherService {
             accountServiceLogoutUrl,
             appConfig.getKeystore());
     } catch (CTPException e) {
-      log.error("Failed to create JWE payload for eq launch");
+      log.with(e).error("Failed to create JWE payload for eq launch");
       throw new FieldServiceException(Fault.SYSTEM_ERROR);
     }
 
     String eqUrl = "https://" + appConfig.getEq().getHost() + "/session?token=" + encryptedPayload;
+    log.with(eqUrl).debug("EQ URL");
 
     return eqUrl;
   }
