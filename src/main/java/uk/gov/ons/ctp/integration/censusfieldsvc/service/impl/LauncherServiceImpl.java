@@ -47,6 +47,8 @@ public class LauncherServiceImpl implements LauncherService {
         log.with("caseId", caseId).with("questionnaireId", questionnaireIdDto.getQuestionnaireId()).info("Questionnaire is inactive");
         throw new FieldServiceException(Fault.QUESTIONNAIRE_INACTIVE);
       }
+      log.with("Case", caseDetails).info("Case details");
+      log.with("Questionnaire", questionnaireIdDto).info("Questionnaire details");
     } catch (ResponseStatusException fse) {
       Fault fault = null;
       switch (fse.getStatus()) {
