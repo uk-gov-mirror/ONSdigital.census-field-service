@@ -70,7 +70,7 @@ public class LauncherServiceImpl implements LauncherService {
     }
 
     caseDetails.setRegion(caseDetails.getOa());
-    String accountServiceUrl = "";
+    String accountServiceUrl = "https://" + appConfig.getDomain() + "/questionnaireCompleted";
     String accountServiceLogoutUrl = "https://" + appConfig.getDomain() + "/questionnaireSaved";
 
     String encryptedPayload = "";
