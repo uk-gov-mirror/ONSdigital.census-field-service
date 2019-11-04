@@ -1,11 +1,11 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc.service.impl;
 
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.model.Channel;
 import uk.gov.ons.ctp.common.model.Language;
@@ -31,7 +31,7 @@ public class LauncherServiceImpl implements LauncherService {
   private EqLaunchService eqLaunchService = new EqLaunchServiceImpl();
 
   @Override
-  public String getEqUrl(String userId, UUID caseId) throws FieldServiceException {
+  public LaunchDetails getEqUrl(String userId, UUID caseId) throws FieldServiceException {
     log.with("userId", userId).with("caseId", caseId).debug("Entering getEqUrl()");
     CaseContainerDTO caseDetails = null;
     QuestionnaireIdDTO questionnaireIdDto = null;
@@ -93,6 +93,11 @@ public class LauncherServiceImpl implements LauncherService {
     String eqUrl = "https://" + appConfig.getEq().getHost() + "/session?token=" + encryptedPayload;
     log.with(eqUrl).debug("EQ URL");
 
-    return eqUrl;
+    LaunchDetails launchDetails = new LaunchDetails();
+    launchDetails.setEqUrl(eqUrl);
+    launchDetails.setQuestionnaireId(questionnaireIdDto.getQuestionnaireId());
+    launchDetails.setCaseId(caseDetails.getId());
+    
+    return launchDetails;
   }
 }

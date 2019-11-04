@@ -20,8 +20,7 @@ public class SurveyLaunchedServiceImpl implements SurveyLaunchedService {
   @Autowired private EventPublisher eventPublisher;
 
   @Override
-  public void surveyLaunched(String questionnaireId, UUID caseId, String userId)
-      throws CTPException {
+  public void surveyLaunched(String questionnaireId, UUID caseId, String userId) {
 
     log.with("questionnaireId", questionnaireId)
         .with("caseId", caseId)
