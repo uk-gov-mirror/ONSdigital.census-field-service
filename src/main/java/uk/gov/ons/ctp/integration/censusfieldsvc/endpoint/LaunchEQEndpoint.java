@@ -39,7 +39,7 @@ public final class LaunchEQEndpoint implements CTPEndpoint {
    * Redirects the caller to start EQ for the supplied case. If there is no user signed in then the
    * G-Suite IDP will require them to sign in before control is passed to this endpoint.
    *
-   * @param caseId the id of the case.
+   * @param caseId the id of the case
    * @param user contains information about the signed in user.
    * @return a ResponseEntity redirecting the caller to EQ.
    * @throws CTPException something went wrong.
@@ -51,49 +51,48 @@ public final class LaunchEQEndpoint implements CTPEndpoint {
       RedirectAttributes redirectAttribs) {
     log.with("pathParam", caseIdStr).with("user", user.getUsername()).info("Entering launchEQ");
 
-    String errorReason = null;
-    RedirectView redirect = new RedirectView("/error", true);
-
     try {
       UUID caseId = UUID.fromString(caseIdStr);
       String eqURL = launcherService.getEqUrl(user.getUsername(), caseId);
-      redirect = new RedirectView(eqURL);
       log.with("eqURL", eqURL).debug("Redirecting caller to EQ");
+      return new RedirectView(eqURL);
     } catch (IllegalArgumentException e) {
-      errorReason = "Bad request - Case ID invalid";
+      return errorRedirect("Bad request - Case ID invalid", redirectAttribs, e);
     } catch (FieldServiceException fse) {
       if (fse.getFault() == Fault.QUESTIONNAIRE_INACTIVE) {
-        redirect = new RedirectView("/questionnaireInactive", true);
+        return new RedirectView("/questionnaireInactive", true);
       } else {
         switch (fse.getFault()) {
           case RESOURCE_NOT_FOUND:
-            errorReason = "Data could not be found";
-            break;
+            return errorRedirect("Data could not be found", redirectAttribs, fse);
           case BAD_REQUEST:
-            errorReason = "Bad request";
-            break;
+            return errorRedirect("Bad request", redirectAttribs, fse);
           case SYSTEM_ERROR:
-            errorReason = "System error";
-            break;
+            return errorRedirect("System error", redirectAttribs, fse);
           default:
-            errorReason = "Unknown";
-            break;
+            return errorRedirect("Unknown", redirectAttribs, fse);
         }
       }
     }
-    if (errorReason != null) {
-      Date date = new Date();
-      try {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash =
-            digest.digest(Long.valueOf(date.getTime()).toString().getBytes(StandardCharsets.UTF_8));
-        String sha256hex = new String(Hex.encode(hash));
-        redirectAttribs.addFlashAttribute("incident", sha256hex.substring(0, 8));
-      } catch (Exception e) {
-        //
-      }
-      redirectAttribs.addFlashAttribute("reason", errorReason);
+  }
+
+  private RedirectView errorRedirect(
+      String reason, RedirectAttributes redirectAttribs, Exception exception) {
+
+    String sha256Hex = "";
+    Date date = new Date();
+    try {
+      MessageDigest digest = MessageDigest.getInstance("SHA-256");
+      byte[] hash =
+          digest.digest(Long.valueOf(date.getTime()).toString().getBytes(StandardCharsets.UTF_8));
+      sha256Hex = new String(Hex.encode(hash));
+      redirectAttribs.addFlashAttribute("incident", sha256Hex.substring(0, 8));
+    } catch (Exception e) {
+      log.warn("Could not produce error hash for diagnostic");
+      // carry on regardless - main functionality unaffected
     }
-    return redirect;
+    log.with("incident", sha256Hex).with(exception).error("Failed to launch EQ");
+    redirectAttribs.addFlashAttribute("reason", reason);
+    return new RedirectView("/error", true);
   }
 }
