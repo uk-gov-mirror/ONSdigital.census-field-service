@@ -152,7 +152,7 @@ public class CensusFieldSvcApplication {
   /**
    * Bean used to publish asynchronous event messages
    *
-   * @param connectionFactory RabbitMQ connection settings and strategies
+   * @param rabbitTemplate RabbitMQ connection settings and strategies
    * @return the event publisher
    */
   @Bean
@@ -170,7 +170,7 @@ public class CensusFieldSvcApplication {
     return template;
   }
 
-  // Register HTML pages
+  // Tell Thymeleaf about the supported HTML pages
   @Configuration
   public static class MvcConfig implements WebMvcConfigurer {
     @Override
@@ -187,12 +187,19 @@ public class CensusFieldSvcApplication {
   public static class MyServiceProviderConfig extends ServiceProviderConfigurerAdapter {
     @Autowired private AppConfig appConfig;
 
+    /** List the pages which can be accessed without SSO authentication. */
     @Override
     public void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
           .antMatchers("/info")
           .permitAll()
-          .antMatchers("/completed")
+          .antMatchers("/error")
+          .permitAll()
+          .antMatchers("/questionnaireCompleted")
+          .permitAll()
+          .antMatchers("/questionnaireInactive.html")
+          .permitAll()
+          .antMatchers("/questionnaireSaved.html")
           .permitAll();
     }
 
@@ -208,9 +215,6 @@ public class CensusFieldSvcApplication {
           .metadataGenerator()
           .entityId(ssoConfig.getEntityId())
           .entityBaseURL(ssoConfig.getEntityBaseURL())
-          .and()
-          .logout()
-          .defaultTargetURL("/afterlogout")
           .and()
           .metadataManager()
           .metadataProvider(idpMetadataProvider)
