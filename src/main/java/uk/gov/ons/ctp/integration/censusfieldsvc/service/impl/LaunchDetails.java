@@ -4,8 +4,8 @@ import java.util.UUID;
 import lombok.Data;
 
 /**
- * Composite object which is used to supply the user of LaunchService with details
- * about the redirection to EQ.
+ * Composite object which is used to supply the user of LaunchService with details about the
+ * redirection to EQ.
  */
 @Data
 public class LaunchDetails {

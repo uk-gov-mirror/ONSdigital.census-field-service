@@ -1,5 +1,9 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc.endpoint;
 
+import com.github.ulisesbocchio.spring.boot.security.saml.annotation.SAMLUser;
+import com.github.ulisesbocchio.spring.boot.security.saml.user.SAMLUserDetails;
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Date;
@@ -12,17 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
-import com.github.ulisesbocchio.spring.boot.security.saml.annotation.SAMLUser;
-import com.github.ulisesbocchio.spring.boot.security.saml.user.SAMLUserDetails;
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
 import uk.gov.ons.ctp.common.endpoint.CTPEndpoint;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.LauncherService;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.SurveyLaunchedService;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.impl.FieldServiceException;
-import uk.gov.ons.ctp.integration.censusfieldsvc.service.impl.LaunchDetails;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.impl.FieldServiceException.Fault;
+import uk.gov.ons.ctp.integration.censusfieldsvc.service.impl.LaunchDetails;
 
 @RestController
 @RequestMapping(value = "/launch", produces = "application/json")
@@ -71,14 +71,15 @@ public final class LaunchEQEndpoint implements CTPEndpoint {
         }
       }
     }
-    
+
     try {
-      surveyLaunchedService.surveyLaunched(launchDetails.getQuestionnaireId(), launchDetails.getCaseId(), user.getUsername());
+      surveyLaunchedService.surveyLaunched(
+          launchDetails.getQuestionnaireId(), launchDetails.getCaseId(), user.getUsername());
     } catch (Exception e) {
       log.warn("Failed to send surveyLaunched event");
       return errorRedirect("System error", redirectAttribs, e);
-    }    
-    
+    }
+
     log.with("eqURL", launchDetails.getEqUrl()).debug("Redirecting caller to EQ");
     return new RedirectView(launchDetails.getEqUrl());
   }

@@ -1,11 +1,11 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc.service.impl;
 
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.model.Channel;
 import uk.gov.ons.ctp.common.model.Language;
@@ -97,7 +97,7 @@ public class LauncherServiceImpl implements LauncherService {
     launchDetails.setEqUrl(eqUrl);
     launchDetails.setQuestionnaireId(questionnaireIdDto.getQuestionnaireId());
     launchDetails.setCaseId(caseDetails.getId());
-    
+
     return launchDetails;
   }
 }
