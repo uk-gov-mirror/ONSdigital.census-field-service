@@ -30,10 +30,16 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.saml.websso.WebSSOProfileConsumer;
+import org.springframework.session.Session;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -241,6 +247,27 @@ public class CensusFieldSvcApplication {
             .serverPort(reverseProxyConfig.getServerPort())
             .includeServerPortInRequestURL(reverseProxyConfig.isIncludeServerPortInRequestURL());
       }
+    }
+
+    @Bean
+    RedisConnectionFactory redisConnectionFactory() {
+      return new LettuceConnectionFactory();
+    }
+
+    @Bean
+    public RedisTemplate<String, Session> sessionRedisTemplate(
+        RedisConnectionFactory connectionFactory) {
+
+      RedisTemplate<String, Session> template = new RedisTemplate<String, Session>();
+      template.setKeySerializer(new StringRedisSerializer());
+      template.setHashKeySerializer(new StringRedisSerializer());
+
+      // JSON Serializer for HashValues
+      template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+      template.setConnectionFactory(connectionFactory);
+
+      return template;
     }
 
     // Sets the max authentication age to a really large value.
