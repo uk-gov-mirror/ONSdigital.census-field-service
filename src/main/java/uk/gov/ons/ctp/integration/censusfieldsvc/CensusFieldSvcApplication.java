@@ -1,11 +1,5 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc;
 
-import com.github.ulisesbocchio.spring.boot.security.saml.bean.override.DSLWebSSOProfileConsumerImpl;
-import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
-import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
-import com.godaddy.logging.LoggingConfigs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,10 +33,19 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.saml.context.SAMLContextProvider;
+import org.springframework.security.saml.context.SAMLContextProviderImpl;
+import org.springframework.security.saml.storage.EmptyStorageFactory;
 import org.springframework.security.saml.websso.WebSSOProfileConsumer;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import com.github.ulisesbocchio.spring.boot.security.saml.bean.override.DSLWebSSOProfileConsumerImpl;
+import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
+import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
+import com.godaddy.logging.LoggingConfigs;
 import uk.gov.ons.ctp.common.error.RestExceptionHandler;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
@@ -208,7 +211,15 @@ public class CensusFieldSvcApplication {
           .antMatchers("/questionnaireSaved.html")
           .permitAll();
     }
-
+    
+    @Bean
+    public SAMLContextProvider samlContextProvider() {
+        SAMLContextProviderImpl contextProvider = new SAMLContextProviderImpl();
+        EmptyStorageFactory emptyStorageFactory = new EmptyStorageFactory();
+    contextProvider.setStorageFactory(emptyStorageFactory);
+    return contextProvider;
+    }
+    
     @Override
     public void configure(ServiceProviderBuilder serviceProvider) throws Exception {
       SsoConfig ssoConfig = appConfig.getSso();
