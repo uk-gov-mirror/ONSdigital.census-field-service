@@ -105,6 +105,11 @@ sso:
     includeServerPortInRequestURL: false
 
 spring:
+  session:
+    store-type: redis
+  redis:
+    host: localhost
+    port: 6379
   mvc:
     servlet:
       path: /
