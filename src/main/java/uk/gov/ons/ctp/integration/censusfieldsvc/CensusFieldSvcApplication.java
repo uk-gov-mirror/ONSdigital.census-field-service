@@ -24,18 +24,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -249,26 +243,26 @@ public class CensusFieldSvcApplication {
       }
     }
 
-    @Bean
-    RedisConnectionFactory redisConnectionFactory() {
-      return new LettuceConnectionFactory();
-    }
-
-    @Bean
-    public RedisTemplate<String, Session> sessionRedisTemplate(
-        RedisConnectionFactory connectionFactory) {
-
-      RedisTemplate<String, Session> template = new RedisTemplate<String, Session>();
-      template.setKeySerializer(new StringRedisSerializer());
-      template.setHashKeySerializer(new StringRedisSerializer());
-
-      // JSON Serializer for HashValues
-      template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-
-      template.setConnectionFactory(connectionFactory);
-
-      return template;
-    }
+    //    @Bean
+    //    RedisConnectionFactory redisConnectionFactory() {
+    //      return new LettuceConnectionFactory();
+    //    }
+    //
+    //    @Bean
+    //    public RedisTemplate<String, Session> sessionRedisTemplate(
+    //        RedisConnectionFactory connectionFactory) {
+    //
+    //      RedisTemplate<String, Session> template = new RedisTemplate<String, Session>();
+    //      template.setKeySerializer(new StringRedisSerializer());
+    //      template.setHashKeySerializer(new StringRedisSerializer());
+    //
+    //      // JSON Serializer for HashValues
+    //      template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+    //
+    //      template.setConnectionFactory(connectionFactory);
+    //
+    //      return template;
+    //    }
 
     // Sets the max authentication age to a really large value.
     // This prevents spring boot from deciding that authentication is too old and throwing an
