@@ -69,6 +69,7 @@
       </exclusions>
     </dependency>
 
+<!-- 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -86,6 +87,7 @@
       <artifactId>lettuce</artifactId>
       <version>3.4.2.Final</version>
     </dependency>
+    -->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -146,7 +148,7 @@
     <dependency>
       <groupId>uk.gov.ons.ctp.integration.common</groupId>
       <artifactId>eq-launcher</artifactId>
-      <version>0.0.11</version>
+      <version>0.0.12</version>
     </dependency>
 
     <dependency>

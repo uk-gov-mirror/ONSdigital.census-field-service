@@ -1,5 +1,11 @@
 package uk.gov.ons.ctp.integration.censusfieldsvc;
 
+import com.github.ulisesbocchio.spring.boot.security.saml.bean.override.DSLWebSSOProfileConsumerImpl;
+import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
+import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
+import com.godaddy.logging.LoggingConfigs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,34 +24,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.saml.context.SAMLContextProvider;
-import org.springframework.security.saml.context.SAMLContextProviderImpl;
-import org.springframework.security.saml.storage.EmptyStorageFactory;
 import org.springframework.security.saml.websso.WebSSOProfileConsumer;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import com.github.ulisesbocchio.spring.boot.security.saml.bean.override.DSLWebSSOProfileConsumerImpl;
-import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderBuilder;
-import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProviderConfigurerAdapter;
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
-import com.godaddy.logging.LoggingConfigs;
 import uk.gov.ons.ctp.common.error.RestExceptionHandler;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
@@ -211,15 +202,7 @@ public class CensusFieldSvcApplication {
           .antMatchers("/questionnaireSaved.html")
           .permitAll();
     }
-    
-    @Bean
-    public SAMLContextProvider samlContextProvider() {
-        SAMLContextProviderImpl contextProvider = new SAMLContextProviderImpl();
-        EmptyStorageFactory emptyStorageFactory = new EmptyStorageFactory();
-    contextProvider.setStorageFactory(emptyStorageFactory);
-    return contextProvider;
-    }
-    
+
     @Override
     public void configure(ServiceProviderBuilder serviceProvider) throws Exception {
       SsoConfig ssoConfig = appConfig.getSso();
@@ -260,26 +243,26 @@ public class CensusFieldSvcApplication {
       }
     }
 
-    @Bean
-    RedisConnectionFactory redisConnectionFactory() {
-      return new LettuceConnectionFactory();
-    }
-
-    @Bean
-    public RedisTemplate<String, Session> sessionRedisTemplate(
-        RedisConnectionFactory connectionFactory) {
-
-      RedisTemplate<String, Session> template = new RedisTemplate<String, Session>();
-      template.setKeySerializer(new StringRedisSerializer());
-      template.setHashKeySerializer(new StringRedisSerializer());
-
-      // JSON Serializer for HashValues
-      template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-
-      template.setConnectionFactory(connectionFactory);
-
-      return template;
-    }
+    //    @Bean
+    //    RedisConnectionFactory redisConnectionFactory() {
+    //      return new LettuceConnectionFactory();
+    //    }
+    //
+    //    @Bean
+    //    public RedisTemplate<String, Session> sessionRedisTemplate(
+    //        RedisConnectionFactory connectionFactory) {
+    //
+    //      RedisTemplate<String, Session> template = new RedisTemplate<String, Session>();
+    //      template.setKeySerializer(new StringRedisSerializer());
+    //      template.setHashKeySerializer(new StringRedisSerializer());
+    //
+    //      // JSON Serializer for HashValues
+    //      template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+    //
+    //      template.setConnectionFactory(connectionFactory);
+    //
+    //      return template;
+    //    }
 
     // Sets the max authentication age to a really large value.
     // This prevents spring boot from deciding that authentication is too old and throwing an
