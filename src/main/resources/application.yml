@@ -17,7 +17,7 @@ logging:
     com.github.ulisesbocchio: INFO
     PROTOCOL_MESSAGE: DEBUG
   profile: DEV
-  useJson: true
+  useJson: false
 
 management:
   health:

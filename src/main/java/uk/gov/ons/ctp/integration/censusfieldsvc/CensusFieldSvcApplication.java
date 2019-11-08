@@ -273,6 +273,16 @@ public class CensusFieldSvcApplication {
       return consumer;
     }
 
+    @Value("#{new Boolean('${logging.useJson}')}")
+    private boolean useJsonLogging;
+
+    @PostConstruct
+    public void initJsonLogging() {
+      if (useJsonLogging) {
+        LoggingConfigs.setCurrent(LoggingConfigs.getCurrent().useJson());
+      }
+    }
+    
     /**
      * This method loads the G-suite IDP metadata. It reads the contents of a template metadata file
      * and replaces some placeholders with the actual runtime values.
