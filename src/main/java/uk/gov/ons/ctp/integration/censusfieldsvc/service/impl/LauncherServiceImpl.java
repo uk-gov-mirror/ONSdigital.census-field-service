@@ -37,11 +37,15 @@ public class LauncherServiceImpl implements LauncherService {
     QuestionnaireIdDTO questionnaireIdDto = null;
 
     try {
+      log.debug("Fetching Case");
       caseDetails = caseServiceClient.getCaseById(caseId, false);
       log.with(caseDetails).debug("The case details received");
 
+      log.debug("Fetching Questionnaire");
       questionnaireIdDto = caseServiceClient.getQidByCaseId(caseId);
       log.with(questionnaireIdDto).debug("The questionnaire id received");
+
+      log.debug("Done fetching");
 
       if (!questionnaireIdDto.isActive()) {
         log.with("caseId", caseId)
@@ -98,6 +102,7 @@ public class LauncherServiceImpl implements LauncherService {
     launchDetails.setQuestionnaireId(questionnaireIdDto.getQuestionnaireId());
     launchDetails.setCaseId(caseDetails.getId());
 
+    log.debug("Exiting getEqUrl()");
     return launchDetails;
   }
 }

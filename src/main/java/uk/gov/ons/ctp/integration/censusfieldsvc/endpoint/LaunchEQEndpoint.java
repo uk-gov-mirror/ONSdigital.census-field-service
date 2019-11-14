@@ -81,6 +81,7 @@ public final class LaunchEQEndpoint implements CTPEndpoint {
     }
 
     log.with("eqURL", launchDetails.getEqUrl()).debug("Redirecting caller to EQ");
+    log.info("Exiting launchEQ");
     return new RedirectView(launchDetails.getEqUrl());
   }
 
