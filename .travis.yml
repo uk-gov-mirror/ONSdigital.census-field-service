@@ -1,0 +1,31 @@
+---
+sudo: required
+
+services:
+  - docker
+
+language: java
+jdk: openjdk11
+
+before_install:
+  - if [ "$TRAVIS_BRANCH" != "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+      git checkout $TRAVIS_BRANCH;
+    fi
+  - cp .maven.settings.xml $HOME/.m2/settings.xml
+  - mvn fmt:check
+  - export TZ=Europe/London
+
+script:
+  - travis_wait mvn verify
+  - mvn clean install
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" != "master" ]; then
+      ./scripts/docker_push.sh;
+    fi
+  - bash <(curl -s https://codecov.io/bash)
+
+cache:
+  directories:
+    - $HOME/.m2
+
