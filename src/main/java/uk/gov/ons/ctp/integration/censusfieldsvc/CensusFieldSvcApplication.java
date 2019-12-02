@@ -288,7 +288,7 @@ public class CensusFieldSvcApplication {
      * and replaces some placeholders with the actual runtime values.
      *
      * @return a String containing the G-suite IDP metadata.
-     * @throws IOExceptionif there is a problem reading the metadata file.
+     * @throws IOException if there is a problem reading the metadata file.
      */
     private String loadIdpMetadata() throws IOException {
       String rawIdpMetadata = readResourceFile("IDPMetadata.xml");
