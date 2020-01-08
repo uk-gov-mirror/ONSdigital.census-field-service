@@ -10,7 +10,7 @@ logging:
 domain: localhost
 
 server:
-  port: 8443
+  port: 443
   ssl:  # Enable ssl, as the G Suite IDP will only work with a https SAML endpoint
     key-store: classpath:localhost-ssl-keystore.p12
     key-store-password: cfsstore-pw
@@ -20,4 +20,4 @@ server:
 sso:
   useReverseProxy: false
   entityId: ${domain}
-  entityBaseURL: https://${domain}:8443
+  entityBaseURL: https://${domain}:443

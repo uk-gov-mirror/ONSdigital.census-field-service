@@ -66,9 +66,9 @@ To run the census-field-service you can run CensusFieldSvcApplication with the f
 
 ### Endpoints and pages
 
-LaunchEQ: https://localhost:8443/launch/47066415-b59f-4df1-869b-8e2b4e818e82
+LaunchEQ: https://localhost:443/launch/47066415-b59f-4df1-869b-8e2b4e818e82
 
-An unprotected field service page: https://localhost:8443/completed
+An unprotected field service page: https://localhost:443/completed
 
 ### HTTPS & SSL keystore
 
