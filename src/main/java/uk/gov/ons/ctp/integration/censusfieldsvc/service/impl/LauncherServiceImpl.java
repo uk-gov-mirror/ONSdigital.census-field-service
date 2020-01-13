@@ -79,7 +79,7 @@ public class LauncherServiceImpl implements LauncherService {
     String encryptedPayload = "";
     try {
       encryptedPayload =
-          eqLaunchService.getEqLaunchJwe(
+          eqLaunchService.getEqFieldLaunchJwe(
               Language.ENGLISH,
               Source.FIELD_SERVICE,
               Channel.FIELD,
