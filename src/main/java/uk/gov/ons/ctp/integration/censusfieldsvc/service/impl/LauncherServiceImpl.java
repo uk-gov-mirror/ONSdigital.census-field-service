@@ -42,7 +42,7 @@ public class LauncherServiceImpl implements LauncherService {
       log.with(caseDetails).debug("The case details received");
 
       log.debug("Fetching Questionnaire");
-      questionnaireIdDto = caseServiceClient.getQidByCaseId(caseId);
+      questionnaireIdDto = caseServiceClient.getReusableQuestionnaireId(caseId);
       log.with(questionnaireIdDto).debug("The questionnaire id received");
 
       log.debug("Done fetching");
