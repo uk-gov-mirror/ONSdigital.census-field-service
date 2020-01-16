@@ -123,11 +123,7 @@
     <dependency>
       <groupId>uk.gov.ons.ctp.integration.common</groupId>
       <artifactId>eq-launcher</artifactId>
-<<<<<<< HEAD
       <version>0.0.19-SNAPSHOT</version>
-=======
-      <version>0.0.18</version>
->>>>>>> master
     </dependency>
 
     <dependency>
