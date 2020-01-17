@@ -2,7 +2,6 @@ package uk.gov.ons.ctp.integration.censusfieldsvc.service.impl;
 
 public class FieldServiceException extends Exception {
 
-  /** */
   private static final long serialVersionUID = -1965708379758146762L;
 
   /** The list of CTP faults */
