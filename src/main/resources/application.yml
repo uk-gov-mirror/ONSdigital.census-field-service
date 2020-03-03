@@ -13,7 +13,7 @@ logging:
     uk.gov.ons.ctp.integration.censusfieldsvc: INFO
     uk.gov.ons.ctp.common: INFO
     org.springframework: INFO
-    org.springframework.security.saml: INFO
+    org.springframework.security: DEBUG
     com.github.ulisesbocchio: INFO
     PROTOCOL_MESSAGE: DEBUG
   profile: DEV
@@ -88,6 +88,9 @@ domain:
 server:
   port: 8177
   use-forward-headers: true  # needed for SAML/SSO to work with a load balancer !
+  servlet:
+    session:
+      timeout: 5m
 
 sso:
   useReverseProxy: true
@@ -107,7 +110,7 @@ sso:
 spring:
   session:
     store-type: redis
-    timeout: 5m
+    timeout: 300
   redis:
     host: 10.254.0.3
     port: 6379
