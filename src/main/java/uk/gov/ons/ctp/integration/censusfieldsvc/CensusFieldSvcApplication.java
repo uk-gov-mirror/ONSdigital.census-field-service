@@ -34,6 +34,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.saml.websso.WebSSOProfileConsumer;
+import org.springframework.session.data.redis.config.ConfigureRedisAction;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -243,26 +244,16 @@ public class CensusFieldSvcApplication {
       }
     }
 
-    //    @Bean
-    //    RedisConnectionFactory redisConnectionFactory() {
-    //      return new LettuceConnectionFactory();
-    //    }
-    //
-    //    @Bean
-    //    public RedisTemplate<String, Session> sessionRedisTemplate(
-    //        RedisConnectionFactory connectionFactory) {
-    //
-    //      RedisTemplate<String, Session> template = new RedisTemplate<String, Session>();
-    //      template.setKeySerializer(new StringRedisSerializer());
-    //      template.setHashKeySerializer(new StringRedisSerializer());
-    //
-    //      // JSON Serializer for HashValues
-    //      template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-    //
-    //      template.setConnectionFactory(connectionFactory);
-    //
-    //      return template;
-    //    }
+    /**
+     * Spring-session tries to use the Redis Config command during initialisation.
+     * Hosted Redis services disable this command and during startup you get the error:
+     *     RedisCommandExecutionException: ERR unknown command `CONFIG`
+     * Bean disables automatic configuration of Redis.
+     */
+    @Bean
+    ConfigureRedisAction configureRedisAction() {
+      return ConfigureRedisAction.NO_OP;
+    }
 
     // Sets the max authentication age to a really large value.
     // This prevents spring boot from deciding that authentication is too old and throwing an
