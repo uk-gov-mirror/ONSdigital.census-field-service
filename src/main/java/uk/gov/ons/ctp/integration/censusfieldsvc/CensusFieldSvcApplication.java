@@ -245,10 +245,10 @@ public class CensusFieldSvcApplication {
     }
 
     /**
-     * Spring-session tries to use the Redis Config command during initialisation.
-     * Hosted Redis services disable this command and during startup you get the error:
-     *     RedisCommandExecutionException: ERR unknown command `CONFIG`
-     * Bean disables automatic configuration of Redis.
+     * Spring-session tries to use the Redis Config command during initialisation. Hosted Redis
+     * services disable this command and during startup you get the error:
+     * RedisCommandExecutionException: ERR unknown command `CONFIG` Bean disables automatic
+     * configuration of Redis.
      */
     @Bean
     ConfigureRedisAction configureRedisAction() {
