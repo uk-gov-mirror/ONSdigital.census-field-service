@@ -88,6 +88,9 @@ domain:
 server:
   port: 8177
   use-forward-headers: true  # needed for SAML/SSO to work with a load balancer !
+  servlet:
+    session:
+      timeout: 5m
 
 sso:
   useReverseProxy: true
@@ -105,11 +108,12 @@ sso:
     includeServerPortInRequestURL: false
 
 spring:
-#  session:
-#    store-type: redis
-#  redis:
-#    host: localhost
-#    port: 6379
+  session:
+    store-type: redis
+    timeout: 300
+  redis:
+    host: localhost
+    port: 7379
   mvc:
     servlet:
       path: /

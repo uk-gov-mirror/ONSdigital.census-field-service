@@ -34,6 +34,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.saml.websso.WebSSOProfileConsumer;
+import org.springframework.session.data.redis.config.ConfigureRedisAction;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -183,6 +186,25 @@ public class CensusFieldSvcApplication {
     }
   }
 
+  /**
+   * Spring-session tries to use the Redis Config command during initialisation. Hosted Redis
+   * services disable this command and during startup you get the error:
+   * RedisCommandExecutionException: ERR unknown command `CONFIG`. Bean disables automatic
+   * configuration of Redis.
+   */
+  @Bean
+  ConfigureRedisAction configureRedisAction() {
+    return ConfigureRedisAction.NO_OP;
+  }
+
+  /** Override Spring-session setting of SameSite cookie attribute which breaks Spring SAML */
+  @Bean
+  public CookieSerializer cookieSerializer() {
+    DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+    serializer.setSameSite("");
+    return serializer;
+  }
+
   @Configuration
   public static class MyServiceProviderConfig extends ServiceProviderConfigurerAdapter {
     @Autowired private AppConfig appConfig;
@@ -242,27 +264,6 @@ public class CensusFieldSvcApplication {
             .includeServerPortInRequestURL(reverseProxyConfig.isIncludeServerPortInRequestURL());
       }
     }
-
-    //    @Bean
-    //    RedisConnectionFactory redisConnectionFactory() {
-    //      return new LettuceConnectionFactory();
-    //    }
-    //
-    //    @Bean
-    //    public RedisTemplate<String, Session> sessionRedisTemplate(
-    //        RedisConnectionFactory connectionFactory) {
-    //
-    //      RedisTemplate<String, Session> template = new RedisTemplate<String, Session>();
-    //      template.setKeySerializer(new StringRedisSerializer());
-    //      template.setHashKeySerializer(new StringRedisSerializer());
-    //
-    //      // JSON Serializer for HashValues
-    //      template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-    //
-    //      template.setConnectionFactory(connectionFactory);
-    //
-    //      return template;
-    //    }
 
     // Sets the max authentication age to a really large value.
     // This prevents spring boot from deciding that authentication is too old and throwing an
