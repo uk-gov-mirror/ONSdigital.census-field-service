@@ -86,6 +86,7 @@ public class LauncherServiceImpl implements LauncherService {
               caseDetails,
               userId,
               questionnaireIdDto.getQuestionnaireId(),
+              questionnaireIdDto.getFormType(),
               accountServiceUrl,
               accountServiceLogoutUrl,
               appConfig.getKeystore());
