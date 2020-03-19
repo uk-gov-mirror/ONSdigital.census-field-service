@@ -112,8 +112,8 @@ spring:
     store-type: redis
     timeout: 300
   redis:
-    host: localhost
-    port: 7379
+    host: 10.254.0.3
+    port: 6379
   mvc:
     servlet:
       path: /
