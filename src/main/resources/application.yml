@@ -113,7 +113,7 @@ spring:
     timeout: 300
   redis:
     host: localhost
-    port: 7379
+    port: 6379
   mvc:
     servlet:
       path: /
