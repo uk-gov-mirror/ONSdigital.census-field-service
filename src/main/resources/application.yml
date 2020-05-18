@@ -90,6 +90,8 @@ server:
   undertow.worker-threads: 40
   undertow.io-threads: 6
   use-forward-headers: true  # needed for SAML/SSO to work with a load balancer !
+  shutdown:
+    grace-period: 30s
   servlet:
     session:
       timeout: 5m
