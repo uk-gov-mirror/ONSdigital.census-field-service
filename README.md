@@ -63,12 +63,14 @@ To run the census-field-service you can run CensusFieldSvcApplication with the f
     -Dspring.profiles.active=local
     -Dsso.idpId=C00n4re6c 
     -Dsso.metadataCertificate=MIIDdD....
+    
+The above "MIIDdD..." needs to be replaced with a (rather long) valid certificate string.    
 
 ### Endpoints and pages
 
-LaunchEQ: https://localhost:443/launch/47066415-b59f-4df1-869b-8e2b4e818e82
+LaunchEQ: https://localhost:443/launch/3305e937-6fb1-4ce1-9d4c-077f147789ab
 
-An unprotected field service page: https://localhost:443/completed
+An unprotected field service page: https://localhost:443/questionnaireCompleted
 
 ### HTTPS & SSL keystore
 

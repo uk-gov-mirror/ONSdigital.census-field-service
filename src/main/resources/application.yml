@@ -87,11 +87,12 @@ domain:
 
 server:
   port: 8177
-  undertow.worker-threads: 40
-  undertow.io-threads: 6
-  use-forward-headers: true  # needed for SAML/SSO to work with a load balancer !
-  shutdown:
-    grace-period: 30s
+  shutdown: graceful
+  undertow:
+    threads:
+      worker: 40
+      io: 6  
+  forward-headers-strategy: NATIVE  # needed for SAML/SSO to work with a load balancer !
   servlet:
     session:
       timeout: 5m
@@ -126,6 +127,8 @@ spring:
       enabled: never
   application:
     name: ONS CensusFieldService
+  lifecycle:
+    timeout-per-shutdown-phase: 30s    
 
 case-service-settings:
   rest-client-config:
