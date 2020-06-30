@@ -160,7 +160,8 @@ public class CensusFieldSvcApplication {
    * @return the event publisher
    */
   @Bean
-  public EventPublisher eventPublisher(final RabbitTemplate rabbitTemplate, final FirestoreEventPersistence eventPersistence) {
+  public EventPublisher eventPublisher(
+      final RabbitTemplate rabbitTemplate, final FirestoreEventPersistence eventPersistence) {
     EventSender sender = new SpringRabbitEventSender(rabbitTemplate);
     return new EventPublisher(sender, eventPersistence);
   }
