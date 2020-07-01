@@ -112,13 +112,14 @@ sso:
     serverPort: 443
     includeServerPortInRequestURL: false
 
+# PMB put port back to 6379
 spring:
   session:
     store-type: redis
     timeout: 300
   redis:
     host: localhost
-    port: 6379
+    port: 7379
   mvc:
     servlet:
       path: /
@@ -163,3 +164,10 @@ keystore: '{
 eq:
   host: www.google.com
   
+cloud-storage:
+  event-backup-schema-name: event-backup
+  backoff:
+    initial: 500
+    multiplier: 2
+    max: 3500
+    max-attempts: 3
