@@ -58,6 +58,9 @@ An unprotected field service page: https://dev-fieldservice.fwmt-gateway.census-
 
 ## Field service on localhost
 
+Make sure that the Field Service can see an environment variable GOOGLE_CLOUD_PROJECT. When running in Eclipse
+I set this in the 'Environment' tab of the launcher with, in my case, a value of 'census-rh-peterb'. 
+
 To run the census-field-service you can run CensusFieldSvcApplication with the following VM arguments:
 
     -Dspring.profiles.active=local
