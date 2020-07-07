@@ -44,6 +44,7 @@ import uk.gov.ons.ctp.common.error.RestExceptionHandler;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
 import uk.gov.ons.ctp.common.event.SpringRabbitEventSender;
+import uk.gov.ons.ctp.common.event.persistence.FirestoreEventPersistence;
 import uk.gov.ons.ctp.common.jackson.CustomObjectMapper;
 import uk.gov.ons.ctp.common.rest.RestClient;
 import uk.gov.ons.ctp.common.rest.RestClientConfig;
@@ -56,7 +57,7 @@ import uk.gov.ons.ctp.integration.censusfieldsvc.config.SsoConfig;
 @SpringBootApplication
 @EnableSAMLSSOWhenNotInTest
 @IntegrationComponentScan("uk.gov.ons.ctp.integration")
-@ComponentScan(basePackages = {"uk.gov.ons.ctp.integration"})
+@ComponentScan(basePackages = {"uk.gov.ons.ctp.integration", "uk.gov.ons.ctp.common"})
 @ImportResource("springintegration/main.xml")
 @EnableCaching
 public class CensusFieldSvcApplication {
@@ -159,9 +160,10 @@ public class CensusFieldSvcApplication {
    * @return the event publisher
    */
   @Bean
-  public EventPublisher eventPublisher(final RabbitTemplate rabbitTemplate) {
+  public EventPublisher eventPublisher(
+      final RabbitTemplate rabbitTemplate, final FirestoreEventPersistence eventPersistence) {
     EventSender sender = new SpringRabbitEventSender(rabbitTemplate);
-    return new EventPublisher(sender);
+    return EventPublisher.createWithEventPersistence(sender, eventPersistence);
   }
 
   @Bean

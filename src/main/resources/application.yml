@@ -163,3 +163,10 @@ keystore: '{
 eq:
   host: www.google.com
   
+cloud-storage:
+  event-backup-schema-name: event-backup
+  backoff:
+    initial: 500
+    multiplier: 2
+    max: 3500
+    max-attempts: 3
