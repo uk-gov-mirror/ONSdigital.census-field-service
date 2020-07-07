@@ -112,14 +112,13 @@ sso:
     serverPort: 443
     includeServerPortInRequestURL: false
 
-# PMB put port back to 6379
 spring:
   session:
     store-type: redis
     timeout: 300
   redis:
     host: localhost
-    port: 7379
+    port: 6379
   mvc:
     servlet:
       path: /
