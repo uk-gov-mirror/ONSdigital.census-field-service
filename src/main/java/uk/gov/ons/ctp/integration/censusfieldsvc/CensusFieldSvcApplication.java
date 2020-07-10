@@ -40,7 +40,6 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import uk.gov.ons.ctp.common.error.RestExceptionHandler;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
 import uk.gov.ons.ctp.common.event.SpringRabbitEventSender;
@@ -122,16 +121,6 @@ public class CensusFieldSvcApplication {
   @Primary
   public CustomObjectMapper customObjectMapper() {
     return new CustomObjectMapper();
-  }
-
-  /**
-   * Bean used to map exceptions for endpoints
-   *
-   * @return the service client
-   */
-  @Bean
-  public RestExceptionHandler restExceptionHandler() {
-    return new RestExceptionHandler();
   }
 
   @Value("#{new Boolean('${logging.useJson}')}")
