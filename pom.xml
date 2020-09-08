@@ -114,6 +114,12 @@
       <version>0.0.43</version>
     </dependency>
 
+    <dependency>
+      <groupId>uk.gov.ons.ctp.integration.common</groupId>
+      <artifactId>event-publisher</artifactId>
+      <version>0.0.43</version>
+    </dependency>
+
     <!-- ONS END -->
 
     <!-- third party libraries -->
