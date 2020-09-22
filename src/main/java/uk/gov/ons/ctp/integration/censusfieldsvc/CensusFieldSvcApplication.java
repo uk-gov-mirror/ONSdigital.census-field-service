@@ -225,20 +225,9 @@ public class CensusFieldSvcApplication {
           new ResourceBackedMetadataProvider(null, new StringResource(idpMetadata));
 
       serviceProvider
-          .metadataGenerator()
-          .entityId(ssoConfig.getEntityId())
-          .entityBaseURL(ssoConfig.getEntityBaseURL())
-          .and()
           .metadataManager()
           .metadataProvider(idpMetadataProvider)
           .refreshCheckInterval(-1)
-          .and()
-          .extendedMetadata()
-          .idpDiscoveryEnabled(false) // disable IDP selection page
-          .and()
-          .keyManager()
-          .privateKeyDERLocation("classpath:/localhost.key.der")
-          .publicKeyPEMLocation("classpath:/localhost.cert")
           .and()
           .ssoProfileConsumer(customWebSSOProfileConsumer());
 
@@ -318,8 +307,10 @@ public class CensusFieldSvcApplication {
       String metadata = rawMetadata;
 
       SsoConfig ssoConfig = appConfig.getSso();
-      metadata = replacePlaceholder(metadata, "sso.idpBaseURL", ssoConfig.getIdpBaseURL());
-      metadata = replacePlaceholder(metadata, "sso.idpId", ssoConfig.getIdpId());
+      // metadata = replacePlaceholder(metadata, "sso.idpBaseURL", ssoConfig.getIdpBaseURL());
+      metadata = replacePlaceholder(metadata, "sso.idpRedirect", ssoConfig.getIdpRedirect());
+      metadata = replacePlaceholder(metadata, "sso.idpPost", ssoConfig.getIdpPost());
+      metadata = replacePlaceholder(metadata, "sso.idpEntityId", ssoConfig.getIdpEntityId());
       metadata =
           replacePlaceholder(
               metadata, "sso.metadataCertificate", ssoConfig.getMetadataCertificate());

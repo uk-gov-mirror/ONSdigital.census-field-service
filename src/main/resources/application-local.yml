@@ -19,5 +19,3 @@ server:
 
 sso:
   useReverseProxy: false
-  entityId: ${domain}
-  entityBaseURL: https://${domain}:443

@@ -101,8 +101,9 @@ sso:
   useReverseProxy: true
   idpBaseURL: https://accounts.google.com/o/saml2
   idpId:
-  entityId: ${domain}
-  entityBaseURL: https://${domain}
+  idpEntityId: ${sso.idpBaseURL}?idpid=${sso.idpId}
+  idpRedirect: ${sso.idpBaseURL}/idp?idpid=${sso.idpId}
+  idpPost: ${sso.idpBaseURL}/idp?idpid=${sso.idpId}
   metadataCertificate:
   springMaxAuthenticationAge: 1252800  # 14.5 days, to make sure Spring timeout greater than the IDP timeout
   reverseProxy:
@@ -111,6 +112,17 @@ sso:
     serverName: ${domain}
     serverPort: 443
     includeServerPortInRequestURL: false
+
+saml:
+  sso:
+    metadata-generator:
+      entity-base-url: https://${domain}:443
+      entity-id: ${domain}
+    extended-metadata:
+      idp-discovery-enabled: false    
+    key-manager:
+      private-key-der-location: classpath:/localhost.key.der
+      public-key-pem-location: classpath:/localhost.cert
 
 spring:
   session:

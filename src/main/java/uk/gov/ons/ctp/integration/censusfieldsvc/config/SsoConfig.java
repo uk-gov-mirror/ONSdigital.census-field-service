@@ -6,10 +6,9 @@ import lombok.Data;
 @Data
 public class SsoConfig {
   private boolean useReverseProxy;
-  @NotBlank private String idpBaseURL;
-  @NotBlank private String idpId;
-  @NotBlank private String entityId;
-  @NotBlank private String entityBaseURL;
+  @NotBlank private String idpRedirect;
+  @NotBlank private String idpPost;
+  @NotBlank private String idpEntityId;
   @NotBlank private String metadataCertificate;
   private long springMaxAuthenticationAge;
   private ReverseProxyConfig reverseProxy;
