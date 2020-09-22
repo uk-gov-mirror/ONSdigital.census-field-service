@@ -21,7 +21,7 @@ sso:
 saml:
   sso:
     metadata-generator:
-      entity-id: fstest  
+      entity-id: fstestdev
     key-manager:
       private-key-der-location: classpath:/fstest.key.der
       public-key-pem-location: classpath:/fstest.pem
