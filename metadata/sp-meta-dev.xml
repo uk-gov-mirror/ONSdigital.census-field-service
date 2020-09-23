@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" validUntil="2021-09-23T14:39:28Z" cacheDuration="PT604800S" entityID="fstestdev">
+  <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIICnjCCAYYCCQCuc0vVGvDaSzANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZmc3Rlc3QwHhcNMjAwOTIxMTMzMzQ3WhcNMzAwOTE5MTMzMzQ3WjARMQ8wDQYDVQQDDAZmc3Rlc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDD0vah+0IsMBQH5ONMO3K2Kr/JAtJPjI/YmIdyyJrqfBcvqfSWkyBTmRMyHQsZ1qtH2Mm/Ad2hVWr6pCo6Mlruxn03BilCh6ZYJJUkiT8rJbTHWDw9Y/I3JmATw05lYf4tFZaIO47UxQAkAzJLI280nFygaRwAJsegHCqv6cIALOGdKn6dPSUQ+6aQnNXvhDLNorEIe52lck0iMYuAElFOO3ETYrppA6ZICwmaNRQhC3DjmnLxoCSPWbRxIXqkkoDiPiGxzkMUJvrvyxe4laU6ll+GSLS9MCvDSGpHwphIcyGO9T+oPAzCRt8Eza7jhW0cgIjzYsI0gOD521BiuKV5AgMBAAEwDQYJKoZIhvcNAQELBQADggEBAD3qBYppD9X5imNDxmm3nT3gjpVZh0uVC5i6Ao6BWIkatMcN6w2vRmDZIbcVwWcAxGMfvky9Voo2urErKiCDrOrZCbkVhfYB8CMUyx706hYZHuGSp2Vqq2pWWHILjPVGiQucJx5/MC0NpF+QZeKWT8vc1Vb+OLl6PsOBQJQpa+EdiU75SzgNGGauNFHCBBPor4loMAh4G0jOjZBSlVSodBnW4BgagLE34RO+CcpjTe7qz5FCfJUzQK9uxcGG8MvqiYEoTNgRxTxmTZSFCtzMqK8OCNDDbfY9QzontrfNyTnXuADGU65P9wb8sQjLAsLFZPnsmrYw8nMvypkyqnt//no=</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIICnjCCAYYCCQCuc0vVGvDaSzANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZmc3Rlc3QwHhcNMjAwOTIxMTMzMzQ3WhcNMzAwOTE5MTMzMzQ3WjARMQ8wDQYDVQQDDAZmc3Rlc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDD0vah+0IsMBQH5ONMO3K2Kr/JAtJPjI/YmIdyyJrqfBcvqfSWkyBTmRMyHQsZ1qtH2Mm/Ad2hVWr6pCo6Mlruxn03BilCh6ZYJJUkiT8rJbTHWDw9Y/I3JmATw05lYf4tFZaIO47UxQAkAzJLI280nFygaRwAJsegHCqv6cIALOGdKn6dPSUQ+6aQnNXvhDLNorEIe52lck0iMYuAElFOO3ETYrppA6ZICwmaNRQhC3DjmnLxoCSPWbRxIXqkkoDiPiGxzkMUJvrvyxe4laU6ll+GSLS9MCvDSGpHwphIcyGO9T+oPAzCRt8Eza7jhW0cgIjzYsI0gOD521BiuKV5AgMBAAEwDQYJKoZIhvcNAQELBQADggEBAD3qBYppD9X5imNDxmm3nT3gjpVZh0uVC5i6Ao6BWIkatMcN6w2vRmDZIbcVwWcAxGMfvky9Voo2urErKiCDrOrZCbkVhfYB8CMUyx706hYZHuGSp2Vqq2pWWHILjPVGiQucJx5/MC0NpF+QZeKWT8vc1Vb+OLl6PsOBQJQpa+EdiU75SzgNGGauNFHCBBPor4loMAh4G0jOjZBSlVSodBnW4BgagLE34RO+CcpjTe7qz5FCfJUzQK9uxcGG8MvqiYEoTNgRxTxmTZSFCtzMqK8OCNDDbfY9QzontrfNyTnXuADGU65P9wb8sQjLAsLFZPnsmrYw8nMvypkyqnt//no=</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://dev-fieldservice.int.census-gcp.onsdigital.uk:443/saml/SSO" index="1"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>
+
