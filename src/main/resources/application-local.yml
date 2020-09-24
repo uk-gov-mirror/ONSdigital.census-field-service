@@ -1,3 +1,7 @@
+#
+# Configuration to connect to Google IDP from a local environment.
+#
+
 logging:
   level:
     uk.gov.ons.ctp.integration.censusfieldsvc: INFO
