@@ -101,5 +101,7 @@ The keystore has been created by the following commands. Note that the localhost
     Is CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown correct?
       [no]:  yes
     
-  
+## Using an alternate IDP
+
+To use an alternate IDP , needed especially for running cucumber tests on kubernetes, look here: [alternate IDP readme](alternate-idp.md).
   
