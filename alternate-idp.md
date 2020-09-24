@@ -1,4 +1,4 @@
-# Using an altenative IDP when running field-service
+# Using an alternative IDP
 
 The Google IDP (Identity Provider) has proved problematic for automated (cucumber) testing of a SAML 
 username/password challenge because of its use of the Captcha technique 
