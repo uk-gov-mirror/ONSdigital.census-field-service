@@ -90,6 +90,14 @@ public class CensusFieldSvcApplication {
   @Autowired
   public CensusFieldSvcApplication(final AppConfig appConfig) {
     this.appConfig = appConfig;
+    SsoConfig ssoConfig = appConfig.getSso();
+    boolean usingAltIdp = !ssoConfig.getIdpPost().contains("google.com");
+    if (usingAltIdp) {
+      log.info("*** Using alternative IDP provider ***");
+      log.info("*** POST URL: {}", ssoConfig.getIdpPost());
+      log.info("*** Redirect URL: {}", ssoConfig.getIdpRedirect());
+      log.info("*** IDP entity ID: {}", ssoConfig.getIdpEntityId());
+    }
   }
 
   /**
@@ -98,7 +106,6 @@ public class CensusFieldSvcApplication {
    * @param args runtime command line args
    */
   public static void main(final String[] args) {
-
     SpringApplication.run(CensusFieldSvcApplication.class, args);
   }
 
