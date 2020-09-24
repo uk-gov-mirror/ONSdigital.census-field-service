@@ -6,13 +6,6 @@ import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProv
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
 import com.godaddy.logging.LoggingConfigs;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider;
@@ -206,6 +199,7 @@ public class CensusFieldSvcApplication {
   @Configuration
   public static class MyServiceProviderConfig extends ServiceProviderConfigurerAdapter {
     @Autowired private AppConfig appConfig;
+    @Autowired private IdpMetadata idpMetadata;
 
     /** List the pages which can be accessed without SSO authentication. */
     @Override
@@ -227,9 +221,9 @@ public class CensusFieldSvcApplication {
     public void configure(ServiceProviderBuilder serviceProvider) throws Exception {
       SsoConfig ssoConfig = appConfig.getSso();
 
-      String idpMetadata = loadIdpMetadata();
+      String metadata = idpMetadata.load();
       ResourceBackedMetadataProvider idpMetadataProvider =
-          new ResourceBackedMetadataProvider(null, new StringResource(idpMetadata));
+          new ResourceBackedMetadataProvider(null, new StringResource(metadata));
 
       serviceProvider
           .metadataManager()
@@ -269,67 +263,6 @@ public class CensusFieldSvcApplication {
       if (useJsonLogging) {
         LoggingConfigs.setCurrent(LoggingConfigs.getCurrent().useJson());
       }
-    }
-
-    /**
-     * This method loads the G-suite IDP metadata. It reads the contents of a template metadata file
-     * and replaces some placeholders with the actual runtime values.
-     *
-     * @return a String containing the G-suite IDP metadata.
-     * @throws IOException if there is a problem reading the metadata file.
-     */
-    private String loadIdpMetadata() throws IOException {
-      String rawIdpMetadata = readResourceFile("IDPMetadata.xml");
-
-      String idpMetadata = replaceMetadataPlaceholders(rawIdpMetadata);
-      return idpMetadata;
-    }
-
-    private String readResourceFile(String resourcePath) throws IOException {
-      try (InputStream inputStream =
-          getClass().getClassLoader().getResource(resourcePath).openStream()) {
-        StringBuilder textBuilder = new StringBuilder();
-        try (Reader reader =
-            new BufferedReader(
-                new InputStreamReader(
-                    inputStream, Charset.forName(StandardCharsets.UTF_8.name())))) {
-          int c = 0;
-          while ((c = reader.read()) != -1) {
-            textBuilder.append((char) c);
-          }
-        }
-        String idpMetadata = textBuilder.toString();
-        return idpMetadata;
-      }
-    }
-
-    /**
-     * Replaces placeholders in the supplied string with actual values from application properties.
-     * Placeholders are in the form '${name}'.
-     *
-     * @param rawMetadata is the string which requires placeholders to be resolved.
-     * @return the completed metadata String.
-     */
-    private String replaceMetadataPlaceholders(String rawMetadata) {
-      String metadata = rawMetadata;
-
-      SsoConfig ssoConfig = appConfig.getSso();
-      // metadata = replacePlaceholder(metadata, "sso.idpBaseURL", ssoConfig.getIdpBaseURL());
-      metadata = replacePlaceholder(metadata, "sso.idpRedirect", ssoConfig.getIdpRedirect());
-      metadata = replacePlaceholder(metadata, "sso.idpPost", ssoConfig.getIdpPost());
-      metadata = replacePlaceholder(metadata, "sso.idpEntityId", ssoConfig.getIdpEntityId());
-      metadata =
-          replacePlaceholder(
-              metadata, "sso.metadataCertificate", ssoConfig.getMetadataCertificate());
-
-      return metadata;
-    }
-
-    private String replacePlaceholder(
-        String metadata, String placeholderName, String placeholderValue) {
-      String placeholderSpec = "\\$\\{" + placeholderName + "\\}";
-      String updatedMetadata = metadata.replaceAll(placeholderSpec, placeholderValue);
-      return updatedMetadata;
     }
   }
 }

@@ -17,7 +17,7 @@ These can be regenerated with the following commands:
     # PEM KEY to DER
     openssl pkcs8 -topk8 -inform PEM -outform DER -in  localhost.key -out  localhost.key.der -nocrypt
     # Finish and cleanup
-    mv localhost.pem localhost.cert 
+    mv localhost.pem localhost.cert
     rm localhost.key
 
 ## Links
@@ -33,7 +33,7 @@ This extension is nowhere near as simple to use as advertised. Here is a page de
 This project is a library which sits over Spring security SAML, and essentially provides a much simpler
 way to configure the Spring security SAML extension.
 
-Project homepage: https://github.com/ulisesbocchio/spring-boot-security-saml 
+Project homepage: https://github.com/ulisesbocchio/spring-boot-security-saml
 
 Samples using this project: https://github.com/ulisesbocchio/spring-boot-security-saml-samples
 
@@ -59,15 +59,15 @@ An unprotected field service page: https://dev-fieldservice.fwmt-gateway.census-
 ## Field service on localhost
 
 Make sure that the Field Service can see an environment variable GOOGLE_CLOUD_PROJECT. When running in Eclipse
-I set this in the 'Environment' tab of the launcher with, in my case, a value of 'census-rh-peterb'. 
+I set this in the 'Environment' tab of the launcher with, in my case, a value of 'census-rh-peterb'.
 
 To run the census-field-service you can run CensusFieldSvcApplication with the following VM arguments:
 
     -Dspring.profiles.active=local
-    -Dsso.idpId=C00n4re6c 
+    -Dsso.idpId=C00n4re6c
     -Dsso.metadataCertificate=MIIDdD....
-    
-The above "MIIDdD..." needs to be replaced with a (rather long) valid certificate string.    
+
+The above "MIIDdD..." needs to be replaced with a (rather long) valid certificate string.
 
 ### Endpoints and pages
 
@@ -77,31 +77,31 @@ An unprotected field service page: https://localhost:443/questionnaireCompleted
 
 ### HTTPS & SSL keystore
 
-For testing on localhost you'll need to run the service using https. In Eclipse run the service with the VM argument: '-Dspring.profiles.active=local' 
+For testing on localhost you'll need to run the service using https. In Eclipse run the service with the VM argument: '-Dspring.profiles.active=local'
 
 The keystore has been created by the following commands. Note that the localhost config assumes a password of 'cfsstore-pw':
-  
+
     $ cd ~/source/census-field-service/src/main/resources.
-    
+
     $ keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 4096 -keystore localhost-ssl-keystore.p12 -validity 3650
-    Enter keystore password:  
-    Re-enter new password: 
+    Enter keystore password:
+    Re-enter new password:
     What is your first and last name?
-      [Unknown]:  
+      [Unknown] :
     What is the name of your organizational unit?
-      [Unknown]:  
+      [Unknown] :
     What is the name of your organization?
-      [Unknown]:  
+      [Unknown] :
     What is the name of your City or Locality?
-      [Unknown]:  
+      [Unknown] :
     What is the name of your State or Province?
-      [Unknown]:  
+      [Unknown] :
     What is the two-letter country code for this unit?
-      [Unknown]:  
+      [Unknown] :
     Is CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown correct?
-      [no]:  yes
-    
+      [no] :  yes
+
 ## Using an alternate IDP
 
 To use an alternate IDP , needed especially for running cucumber tests on kubernetes, look here: [alternate IDP readme](alternate-idp.md).
-  
+
