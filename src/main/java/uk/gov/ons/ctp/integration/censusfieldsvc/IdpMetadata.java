@@ -63,15 +63,12 @@ public class IdpMetadata {
    */
   private String replaceMetadataPlaceholders(String rawMetadata) {
     String metadata = rawMetadata;
-
     SsoConfig ssoConfig = appConfig.getSso();
     metadata = replacePlaceholder(metadata, "sso.idpRedirect", ssoConfig.getIdpRedirect());
     metadata = replacePlaceholder(metadata, "sso.idpPost", ssoConfig.getIdpPost());
     metadata = replacePlaceholder(metadata, "sso.idpEntityId", ssoConfig.getIdpEntityId());
-    metadata =
-        replacePlaceholder(metadata, "sso.metadataCertificate", ssoConfig.getMetadataCertificate());
-
-    return metadata;
+    String cert = ssoConfig.getMetadataCertificate().replace("\n", "").replace("\r", "");
+    return replacePlaceholder(metadata, "sso.metadataCertificate", cert);
   }
 
   private String replacePlaceholder(
