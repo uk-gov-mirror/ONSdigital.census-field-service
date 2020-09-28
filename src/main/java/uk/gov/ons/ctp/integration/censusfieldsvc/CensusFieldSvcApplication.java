@@ -84,13 +84,14 @@ public class CensusFieldSvcApplication {
   public CensusFieldSvcApplication(final AppConfig appConfig) {
     this.appConfig = appConfig;
     SsoConfig ssoConfig = appConfig.getSso();
-    boolean usingAltIdp = !ssoConfig.getIdpPost().contains("google.com");
-    if (usingAltIdp) {
+    if (ssoConfig.getIdpPost().contains("google.com")) {
+      log.info("*** Using Google GSuite IDP provider ***");
+    } else {
       log.info("*** Using alternative IDP provider ***");
-      log.info("*** POST URL: {}", ssoConfig.getIdpPost());
-      log.info("*** Redirect URL: {}", ssoConfig.getIdpRedirect());
-      log.info("*** IDP entity ID: {}", ssoConfig.getIdpEntityId());
     }
+    log.info("*** POST URL: {}", ssoConfig.getIdpPost());
+    log.info("*** Redirect URL: {}", ssoConfig.getIdpRedirect());
+    log.info("*** IDP entity ID: {}", ssoConfig.getIdpEntityId());
   }
 
   /**

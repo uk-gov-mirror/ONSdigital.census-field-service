@@ -41,5 +41,5 @@ saml:
     metadata-generator:
       entity-id: fstestdev
     key-manager:
-      private-key-der-location: classpath:/samltest/fstest.key.der
-      public-key-pem-location: classpath:/samltest/fstest.pem
+      private-key-der-location: classpath:/alternate-idp/fstest.key.der
+      public-key-pem-location: classpath:/alternate-idp/fstest.pem
