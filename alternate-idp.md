@@ -26,7 +26,7 @@ You will need the usual `GOOGLE_CLOUD_PROJECT` and `GOOGLE_APPLICATION_CREDENTIA
 You can start up from the commandline as so:
 
 ```
-mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=local-with-alt-idp
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=local-with-alt-idp"
 ```
 
 If you are running from an IDE such as eclipe, ensure your JVM arguments has the following set:
