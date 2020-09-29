@@ -1,3 +1,7 @@
+#
+# Configuration to connect to Google IDP from a local environment.
+#
+
 logging:
   level:
     uk.gov.ons.ctp.integration.censusfieldsvc: INFO
@@ -19,5 +23,3 @@ server:
 
 sso:
   useReverseProxy: false
-  entityId: ${domain}
-  entityBaseURL: https://${domain}:443

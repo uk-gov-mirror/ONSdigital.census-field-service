@@ -1,19 +1,32 @@
+#
+# Configuration to go to a test IDP (not GCP).
+# This will match the IDP that is used for the cucumber run as set in the k8s environments.
+#
+
 logging:
   level:
-    uk.gov.ons.ctp.integration.censusfieldsvc: DEBUG
+    uk.gov.ons.ctp.integration.censusfieldsvc: INFO
     uk.gov.ons.ctp.common: INFO
-    org.springframework: WARN
-    org.springframework.security.saml: WARN
-    com.github.ulisesbocchio: INFO
+    org.springframework: INFO
+    org.springframework.security.saml: INFO
+    com.github.ulisesbocchio: DEBUG
     PROTOCOL_MESSAGE: DEBUG
-  profile: CLOUD
-  useJson: true
-  
+    
+domain: localhost
+
+server:
+  port: 443
+  ssl:  # Enable ssl
+    key-store: classpath:localhost-ssl-keystore.p12
+    key-store-password: cfsstore-pw
+    keyStoreType: PKCS12
+    keyAlias: tomcat
+
 #
 # Configure to talk to samltest.id online IDP service.
-# This will allow cucumber to run without Capcha problems in the k8s environments.
 #
 sso:
+  useReverseProxy: false
   idpRedirect: https://samltest.id/idp/profile/SAML2/Redirect/SSO
   idpPost: https://samltest.id/idp/profile/SAML2/POST/SSO
   idpEntityId: https://samltest.id/saml/idp
@@ -34,12 +47,14 @@ sso:
     TNiLArAxOYtzfYbzb5QrNNH/gQEN8RJaEf/g/1GTw9x/103dSMK0RXtl+fRs2nbl
     D1JJKSQ3AdhxK/weP3aUPtLxVVJ9wMOQOfcy02l+hHMb6uAjsPOpOVKqi3M8XmcU
     ZOpx4swtgGdeoSpeRyrtMvRwdcciNBp9UZome44qZAYH1iqrpmmjsfI9pJItsgWu
-    3kXPjhSfj1AJGR1l9JGvJrHki1iHTA== 
+    3kXPjhSfj1AJGR1l9JGvJrHki1iHTA==  
   
 saml:
   sso:
     metadata-generator:
-      entity-id: fstestdev
+      entity-id: fstest  
     key-manager:
       private-key-der-location: classpath:/alternate-idp/fstest.key.der
       public-key-pem-location: classpath:/alternate-idp/fstest.pem
+  
+  
