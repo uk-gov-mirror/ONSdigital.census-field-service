@@ -57,7 +57,7 @@ public class LauncherServiceImplTest {
     CaseContainerDTO ccdto = makeCaseDetails();
 
     when(eqLaunchService.getEqLaunchJwe(
-            any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
+            any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
         .thenReturn(A_DUMMY_ENCRYPTED_PAYLOAD);
     when(caseServiceClient.getCaseById(eq(A_CASE_ID), eq(false))).thenReturn(ccdto);
     when(caseServiceClient.getReusableQuestionnaireId(eq(A_CASE_ID))).thenReturn(qdto);
@@ -75,7 +75,7 @@ public class LauncherServiceImplTest {
     CaseContainerDTO ccdto = makeCaseDetails();
 
     when(eqLaunchService.getEqLaunchJwe(
-            any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
+            any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
         .thenThrow(new CTPException(Fault.BAD_REQUEST));
     when(caseServiceClient.getCaseById(eq(A_CASE_ID), eq(false))).thenReturn(ccdto);
     when(caseServiceClient.getReusableQuestionnaireId(eq(A_CASE_ID))).thenReturn(qdto);

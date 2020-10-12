@@ -182,3 +182,6 @@ cloud-storage:
     multiplier: 2
     max: 3500
     max-attempts: 3
+
+# This passphrase is used to encrypt the responseId in EQ
+passPhrase: CENSUS

@@ -89,7 +89,8 @@ public class LauncherServiceImpl implements LauncherService {
               questionnaireIdDto.getFormType(),
               accountServiceUrl,
               accountServiceLogoutUrl,
-              appConfig.getKeystore());
+              appConfig.getKeystore(),
+              appConfig.getPassPhrase());
     } catch (CTPException e) {
       log.with(e).error("Failed to create JWE payload for eq launch");
       throw new FieldServiceException(Fault.SYSTEM_ERROR);
