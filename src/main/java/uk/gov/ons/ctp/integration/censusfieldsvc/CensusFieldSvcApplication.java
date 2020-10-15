@@ -6,6 +6,9 @@ import com.github.ulisesbocchio.spring.boot.security.saml.configurer.ServiceProv
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
 import com.godaddy.logging.LoggingConfigs;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+import java.time.Duration;
 import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider;
@@ -18,6 +21,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +49,7 @@ import uk.gov.ons.ctp.common.rest.RestClient;
 import uk.gov.ons.ctp.common.rest.RestClientConfig;
 import uk.gov.ons.ctp.integration.caseapiclient.caseservice.CaseServiceClientServiceImpl;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.AppConfig;
+import uk.gov.ons.ctp.integration.censusfieldsvc.config.CustomCircuitBreakerConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.ReverseProxyConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.SsoConfig;
 
@@ -151,9 +159,44 @@ public class CensusFieldSvcApplication {
    */
   @Bean
   public EventPublisher eventPublisher(
-      final RabbitTemplate rabbitTemplate, final FirestoreEventPersistence eventPersistence) {
+      final RabbitTemplate rabbitTemplate,
+      final FirestoreEventPersistence eventPersistence,
+      final Resilience4JCircuitBreakerFactory circuitBreakerFactory) {
     EventSender sender = new SpringRabbitEventSender(rabbitTemplate);
-    return EventPublisher.createWithEventPersistence(sender, eventPersistence);
+    CircuitBreaker circuitBreaker = circuitBreakerFactory.create("eventSendCircuitBreaker");
+    return EventPublisher.createWithEventPersistence(sender, eventPersistence, circuitBreaker);
+  }
+
+  @Bean
+  public Customizer<Resilience4JCircuitBreakerFactory> defaultCircuitBreakerCustomiser() {
+    CustomCircuitBreakerConfig config = appConfig.getCircuitBreaker();
+    log.info("Circuit breaker configuration: {}", config);
+    TimeLimiterConfig timeLimiterConfig =
+        TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(config.getTimeout())).build();
+    CircuitBreakerConfig cbConfig =
+        CircuitBreakerConfig.custom()
+            .minimumNumberOfCalls(config.getMinNumberOfCalls())
+            .slidingWindowSize(config.getSlidingWindowSize())
+            .failureRateThreshold(config.getFailureRateThreshold())
+            .slowCallRateThreshold(config.getSlowCallRateThreshold())
+            .writableStackTraceEnabled(config.isWritableStackTraceEnabled())
+            .waitDurationInOpenState(Duration.ofSeconds(config.getWaitDurationSecondsInOpenState()))
+            .slowCallDurationThreshold(
+                Duration.ofSeconds(config.getSlowCallDurationSecondsThreshold()))
+            .permittedNumberOfCallsInHalfOpenState(
+                config.getPermittedNumberOfCallsInHalfOpenState())
+            .slidingWindowType(config.getSlidingWindowType())
+            .automaticTransitionFromOpenToHalfOpenEnabled(
+                config.isAutomaticTransitionFromOpenToHalfOpenEnabled())
+            .build();
+
+    return factory ->
+        factory.configureDefault(
+            id ->
+                new Resilience4JConfigBuilder(id)
+                    .timeLimiterConfig(timeLimiterConfig)
+                    .circuitBreakerConfig(cbConfig)
+                    .build());
   }
 
   @Bean
