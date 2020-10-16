@@ -16,6 +16,7 @@ import uk.gov.ons.ctp.integration.caseapiclient.caseservice.model.QuestionnaireI
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.AppConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.LauncherService;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.impl.FieldServiceException.Fault;
+import uk.gov.ons.ctp.integration.eqlaunch.service.EqLaunchData;
 import uk.gov.ons.ctp.integration.eqlaunch.service.EqLaunchService;
 import uk.gov.ons.ctp.integration.eqlaunch.service.impl.EqLaunchServiceImpl;
 
@@ -80,17 +81,19 @@ public class LauncherServiceImpl implements LauncherService {
     try {
       encryptedPayload =
           eqLaunchService.getEqLaunchJwe(
-              Language.ENGLISH,
-              Source.FIELD_SERVICE,
-              Channel.FIELD,
-              caseDetails,
-              userId,
-              questionnaireIdDto.getQuestionnaireId(),
-              questionnaireIdDto.getFormType(),
-              accountServiceUrl,
-              accountServiceLogoutUrl,
-              appConfig.getKeystore(),
-              appConfig.getPassPhrase());
+              EqLaunchData.builder()
+                .language(Language.ENGLISH)
+                .source(Source.FIELD_SERVICE)
+                .channel(Channel.FIELD)
+                .questionnaireId(questionnaireIdDto.getQuestionnaireId())
+                .formType(questionnaireIdDto.getFormType())
+                .keyStore(appConfig.getKeystore())
+                .salt(appConfig.getPassPhrase())
+                .caseContainer(caseDetails)
+                .userId(userId)
+                .accountServiceUrl(accountServiceUrl)
+                .accountServiceLogoutUrl(accountServiceLogoutUrl)
+                .build());
     } catch (CTPException e) {
       log.with(e).error("Failed to create JWE payload for eq launch");
       throw new FieldServiceException(Fault.SYSTEM_ERROR);
