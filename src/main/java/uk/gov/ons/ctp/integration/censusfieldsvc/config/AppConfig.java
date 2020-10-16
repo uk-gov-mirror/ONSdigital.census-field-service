@@ -21,5 +21,4 @@ public class AppConfig {
   private SsoConfig sso;
   private KeyStore keystore;
   private EqConfig eq;
-  private String passPhrase;
 }

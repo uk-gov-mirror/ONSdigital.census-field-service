@@ -174,7 +174,8 @@ keystore: '{
 
 eq:
   host: www.google.com
-  
+  response-id-salt: CENSUS
+
 cloud-storage:
   event-backup-schema-name: event-backup
   backoff:
@@ -182,6 +183,3 @@ cloud-storage:
     multiplier: 2
     max: 3500
     max-attempts: 3
-
-# This passphrase is used to encrypt the responseId in EQ
-passPhrase: CENSUS

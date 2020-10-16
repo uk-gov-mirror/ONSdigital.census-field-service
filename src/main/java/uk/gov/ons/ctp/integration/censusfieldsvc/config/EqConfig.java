@@ -6,4 +6,5 @@ import lombok.Data;
 @Data
 public class EqConfig {
   @NotBlank private String host;
+  @NotBlank private String responseIdSalt;
 }
