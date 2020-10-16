@@ -82,18 +82,18 @@ public class LauncherServiceImpl implements LauncherService {
       encryptedPayload =
           eqLaunchService.getEqLaunchJwe(
               EqLaunchData.builder()
-                .language(Language.ENGLISH)
-                .source(Source.FIELD_SERVICE)
-                .channel(Channel.FIELD)
-                .questionnaireId(questionnaireIdDto.getQuestionnaireId())
-                .formType(questionnaireIdDto.getFormType())
-                .keyStore(appConfig.getKeystore())
-                .salt(appConfig.getPassPhrase())
-                .caseContainer(caseDetails)
-                .userId(userId)
-                .accountServiceUrl(accountServiceUrl)
-                .accountServiceLogoutUrl(accountServiceLogoutUrl)
-                .build());
+                  .language(Language.ENGLISH)
+                  .source(Source.FIELD_SERVICE)
+                  .channel(Channel.FIELD)
+                  .questionnaireId(questionnaireIdDto.getQuestionnaireId())
+                  .formType(questionnaireIdDto.getFormType())
+                  .keyStore(appConfig.getKeystore())
+                  .salt(appConfig.getPassPhrase())
+                  .caseContainer(caseDetails)
+                  .userId(userId)
+                  .accountServiceUrl(accountServiceUrl)
+                  .accountServiceLogoutUrl(accountServiceLogoutUrl)
+                  .build());
     } catch (CTPException e) {
       log.with(e).error("Failed to create JWE payload for eq launch");
       throw new FieldServiceException(Fault.SYSTEM_ERROR);
