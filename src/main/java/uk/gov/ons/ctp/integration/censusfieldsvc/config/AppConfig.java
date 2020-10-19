@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.validation.annotation.Validated;
+import uk.gov.ons.ctp.common.config.CustomCircuitBreakerConfig;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.KeyStore;
 
 /** Application Config bean */
@@ -21,4 +22,5 @@ public class AppConfig {
   private SsoConfig sso;
   private KeyStore keystore;
   private EqConfig eq;
+  private CustomCircuitBreakerConfig circuitBreaker;
 }

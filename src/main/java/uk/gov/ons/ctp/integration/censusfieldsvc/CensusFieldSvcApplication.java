@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +36,7 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import uk.gov.ons.ctp.common.config.CustomCircuitBreakerConfig;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
 import uk.gov.ons.ctp.common.event.SpringRabbitEventSender;
@@ -151,9 +155,19 @@ public class CensusFieldSvcApplication {
    */
   @Bean
   public EventPublisher eventPublisher(
-      final RabbitTemplate rabbitTemplate, final FirestoreEventPersistence eventPersistence) {
+      final RabbitTemplate rabbitTemplate,
+      final FirestoreEventPersistence eventPersistence,
+      final Resilience4JCircuitBreakerFactory circuitBreakerFactory) {
     EventSender sender = new SpringRabbitEventSender(rabbitTemplate);
-    return EventPublisher.createWithEventPersistence(sender, eventPersistence);
+    CircuitBreaker circuitBreaker = circuitBreakerFactory.create("eventSendCircuitBreaker");
+    return EventPublisher.createWithEventPersistence(sender, eventPersistence, circuitBreaker);
+  }
+
+  @Bean
+  public Customizer<Resilience4JCircuitBreakerFactory> defaultCircuitBreakerCustomiser() {
+    CustomCircuitBreakerConfig config = appConfig.getCircuitBreaker();
+    log.info("Circuit breaker configuration: {}", config);
+    return config.defaultCircuitBreakerCustomiser();
   }
 
   @Bean
