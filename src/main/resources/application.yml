@@ -140,7 +140,13 @@ spring:
   application:
     name: ONS CensusFieldService
   lifecycle:
-    timeout-per-shutdown-phase: 30s    
+    timeout-per-shutdown-phase: 30s
+  rabbitmq:
+    username: guest
+    password: guest
+    host: localhost
+    port: 35672
+    virtual-host: /
 
 case-service-settings:
   rest-client-config:
@@ -149,13 +155,6 @@ case-service-settings:
     scheme: http
     host: localhost
     port: 8161
-    
-rabbitmq:
-  username: guest
-  password: guest
-  host: localhost
-  port: 35672
-  virtual-host: /
   
 circuit-breaker:
   timeout: 4
