@@ -24,7 +24,6 @@ import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.IntegrationComponentScan;
@@ -54,7 +53,6 @@ import uk.gov.ons.ctp.integration.censusfieldsvc.config.SsoConfig;
 @EnableSAMLSSOWhenNotInTest
 @IntegrationComponentScan("uk.gov.ons.ctp.integration")
 @ComponentScan(basePackages = {"uk.gov.ons.ctp.integration", "uk.gov.ons.ctp.common"})
-@ImportResource("springintegration/main.xml")
 @EnableCaching
 public class CensusFieldSvcApplication {
   private static final Logger log = LoggerFactory.getLogger(CensusFieldSvcApplication.class);
@@ -150,8 +148,10 @@ public class CensusFieldSvcApplication {
   /**
    * Bean used to publish asynchronous event messages
    *
-   * @param rabbitTemplate RabbitMQ connection settings and strategies
-   * @return the event publisher
+   * @param rabbitTemplate rabbit template
+   * @param eventPersistence event persistence object
+   * @param circuitBreakerFactory circuit breaker factory
+   * @return event publisher
    */
   @Bean
   public EventPublisher eventPublisher(
