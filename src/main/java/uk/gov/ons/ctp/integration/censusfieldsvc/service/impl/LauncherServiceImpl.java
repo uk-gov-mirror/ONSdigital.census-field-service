@@ -99,7 +99,7 @@ public class LauncherServiceImpl implements LauncherService {
       throw new FieldServiceException(Fault.SYSTEM_ERROR);
     }
 
-    String eqUrl = "https://" + appConfig.getEq().getHost() + "/session?token=" + encryptedPayload;
+    String eqUrl = "https://" + appConfig.getEq().getHost() + "?token=" + encryptedPayload;
     log.with(eqUrl).debug("EQ URL");
 
     LaunchDetails launchDetails = new LaunchDetails();
