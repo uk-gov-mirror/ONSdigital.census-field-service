@@ -27,4 +27,4 @@ sso:
 saml:
   sso:
     metadata-generator:
-      entity-base-url: https://${domain}:443  
+      entity-base-url: https://${domain}:443

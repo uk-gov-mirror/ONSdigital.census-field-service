@@ -53,7 +53,7 @@ saml:
   sso:
     metadata-generator:
       entity-id: fstest
-      entity-base-url: https://${domain}:443  
+      entity-base-url: https://${domain}:443
     key-manager:
       private-key-der-location: classpath:/alternate-idp/fstest.key.der
       public-key-pem-location: classpath:/alternate-idp/fstest.pem
