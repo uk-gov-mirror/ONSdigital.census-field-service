@@ -12,6 +12,7 @@ import org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -177,6 +178,19 @@ public class CensusFieldSvcApplication {
     template.setExchange("events");
     template.setChannelTransacted(true);
     return template;
+  }
+
+  @Bean
+  public SmartInitializingSingleton appInit(RabbitTemplate rabbitTemplate) {
+    return () -> {
+      try {
+        rabbitTemplate.execute(
+            (channel) -> channel.getConnection().getServerProperties().get("version").toString());
+        log.info("Rabbit connection check success");
+      } catch (Exception e) {
+        log.error("Cannot connect to rabbit; please check configured credentials", e);
+      }
+    };
   }
 
   // Tell Thymeleaf about the supported HTML pages
