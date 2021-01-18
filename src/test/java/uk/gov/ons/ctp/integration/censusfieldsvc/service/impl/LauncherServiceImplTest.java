@@ -36,7 +36,7 @@ public class LauncherServiceImplTest {
   private static final String SALT = "CENSUS";
   private static final String A_DUMMY_ENCRYPTED_PAYLOAD = "xasdsada";
   private static final String A_URL_RESULT =
-      "https://" + A_HOST + "/session?token=" + A_DUMMY_ENCRYPTED_PAYLOAD;
+      "https://" + A_HOST + "?token=" + A_DUMMY_ENCRYPTED_PAYLOAD;
 
   @Mock private KeyStore keyStoreEncryption;
 

@@ -23,3 +23,8 @@ server:
 
 sso:
   useReverseProxy: false
+
+saml:
+  sso:
+    metadata-generator:
+      entity-base-url: https://${domain}:443
