@@ -159,6 +159,10 @@ case-service-settings:
 circuit-breaker:
   timeout: 4
   
+messaging:
+  publish:
+    max-attempts: 4 
+  
 keystore: '{
   "keys": {
     "fdc4d96ce6a8fac00d3eba192af1574ffda1c7f0": {

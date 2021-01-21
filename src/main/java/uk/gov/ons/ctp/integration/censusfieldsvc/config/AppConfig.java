@@ -23,4 +23,5 @@ public class AppConfig {
   private KeyStore keystore;
   private EqConfig eq;
   private CustomCircuitBreakerConfig circuitBreaker;
+  private MessagingConfig messaging;
 }
