@@ -161,7 +161,7 @@ circuit-breaker:
   
 messaging:
   publish:
-    max-attempts: 4 
+    max-attempts: 10
   
 keystore: '{
   "keys": {
