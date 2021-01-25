@@ -43,6 +43,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import uk.gov.ons.ctp.common.cloud.CloudRetryListener;
 import uk.gov.ons.ctp.common.config.CustomCircuitBreakerConfig;
+import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
 import uk.gov.ons.ctp.common.event.SpringRabbitEventSender;
@@ -146,7 +147,7 @@ public class CensusFieldSvcApplication {
 
   @Bean
   @Qualifier("caseServiceClient")
-  public CaseServiceClientServiceImpl caseServiceClient() {
+  public CaseServiceClientServiceImpl caseServiceClient() throws CTPException {
     RestClientConfig clientConfig = appConfig.getCaseServiceSettings().getRestClientConfig();
     RestClient restHelper = new RestClient(clientConfig, httpErrorMapping, defaultHttpStatus);
     CaseServiceClientServiceImpl csClientServiceImpl = new CaseServiceClientServiceImpl(restHelper);
