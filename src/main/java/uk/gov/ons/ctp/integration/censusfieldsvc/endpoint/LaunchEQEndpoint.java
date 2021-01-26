@@ -76,7 +76,9 @@ public final class LaunchEQEndpoint implements CTPEndpoint {
       surveyLaunchedService.surveyLaunched(
           launchDetails.getQuestionnaireId(), launchDetails.getCaseId(), user.getUsername());
     } catch (Exception e) {
-      log.warn("Failed to send surveyLaunched event");
+      log.with("caseId", launchDetails.getCaseId())
+          .with("errorMessage", e.getMessage())
+          .warn("Failed to send surveyLaunched event");
       return errorRedirect("System error", redirectAttribs, e);
     }
 
@@ -97,10 +99,10 @@ public final class LaunchEQEndpoint implements CTPEndpoint {
       sha256Hex = new String(Hex.encode(hash));
       redirectAttribs.addFlashAttribute("incident", sha256Hex.substring(0, 8));
     } catch (Exception e) {
-      log.warn("Could not produce error hash for diagnostic");
+      log.with("errorMessage", e.getMessage()).warn("Could not produce error hash for diagnostic");
       // carry on regardless - main functionality unaffected
     }
-    log.with("incident", sha256Hex).with(exception).error("Failed to launch EQ");
+    log.with("incident", sha256Hex).with("exception", exception).error("Failed to launch EQ");
     redirectAttribs.addFlashAttribute("reason", reason);
     return new RedirectView("/error", true);
   }
