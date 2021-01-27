@@ -95,7 +95,9 @@ public class LauncherServiceImpl implements LauncherService {
               .build();
       encryptedPayload = eqLaunchService.getEqLaunchJwe(eqLaunchData);
     } catch (CTPException e) {
-      log.with(e).error("Failed to create JWE payload for eq launch");
+      log.with("caseId", caseId)
+          .with("questionnaireId", questionnaireIdDto.getQuestionnaireId())
+          .error("Failed to create JWE payload for eq launch", e);
       throw new FieldServiceException(Fault.SYSTEM_ERROR);
     }
 
