@@ -43,6 +43,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import uk.gov.ons.ctp.common.cloud.CloudRetryListener;
 import uk.gov.ons.ctp.common.config.CustomCircuitBreakerConfig;
+import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventSender;
 import uk.gov.ons.ctp.common.event.SpringRabbitEventSender;
@@ -55,6 +56,8 @@ import uk.gov.ons.ctp.integration.censusfieldsvc.config.AppConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.MessagingConfig.PublishConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.ReverseProxyConfig;
 import uk.gov.ons.ctp.integration.censusfieldsvc.config.SsoConfig;
+import uk.gov.ons.ctp.integration.eqlaunch.service.EqLaunchService;
+import uk.gov.ons.ctp.integration.eqlaunch.service.impl.EqLaunchServiceImpl;
 
 /** The 'main' entry point for the CensusField Svc SpringBoot Application. */
 @SpringBootApplication
@@ -221,6 +224,11 @@ public class CensusFieldSvcApplication {
         log.error("Cannot connect to rabbit; please check configured credentials", e);
       }
     };
+  }
+
+  @Bean
+  public EqLaunchService eqLaunchService() throws CTPException {
+    return new EqLaunchServiceImpl(appConfig.getKeystore());
   }
 
   // Tell Thymeleaf about the supported HTML pages

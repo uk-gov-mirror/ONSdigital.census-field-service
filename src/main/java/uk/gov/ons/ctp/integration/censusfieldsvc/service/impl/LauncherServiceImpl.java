@@ -18,7 +18,6 @@ import uk.gov.ons.ctp.integration.censusfieldsvc.service.LauncherService;
 import uk.gov.ons.ctp.integration.censusfieldsvc.service.impl.FieldServiceException.Fault;
 import uk.gov.ons.ctp.integration.eqlaunch.service.EqLaunchData;
 import uk.gov.ons.ctp.integration.eqlaunch.service.EqLaunchService;
-import uk.gov.ons.ctp.integration.eqlaunch.service.impl.EqLaunchServiceImpl;
 
 @Service
 public class LauncherServiceImpl implements LauncherService {
@@ -29,7 +28,7 @@ public class LauncherServiceImpl implements LauncherService {
 
   @Autowired private CaseServiceClientServiceImpl caseServiceClient;
 
-  private EqLaunchService eqLaunchService = new EqLaunchServiceImpl();
+  @Autowired EqLaunchService eqLaunchService;
 
   @Override
   public LaunchDetails getEqUrl(String userId, UUID caseId) throws FieldServiceException {
@@ -86,7 +85,6 @@ public class LauncherServiceImpl implements LauncherService {
               .channel(Channel.FIELD)
               .questionnaireId(questionnaireIdDto.getQuestionnaireId())
               .formType(questionnaireIdDto.getFormType())
-              .keyStore(appConfig.getKeystore())
               .salt(appConfig.getEq().getResponseIdSalt())
               .caseContainer(caseDetails)
               .userId(userId)
