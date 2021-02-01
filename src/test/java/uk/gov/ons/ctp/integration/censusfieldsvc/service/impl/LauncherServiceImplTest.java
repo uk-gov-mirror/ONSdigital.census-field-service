@@ -58,9 +58,6 @@ public class LauncherServiceImplTest {
 
   @Test
   public void shouldGetEqUrl() throws Exception {
-
-    when(appConfig.getKeystore()).thenReturn(keyStoreEncryption);
-
     QuestionnaireIdDTO qdto = makeQuestionnaireDto();
     CaseContainerDTO ccdto = makeCaseDetails();
 
@@ -79,7 +76,6 @@ public class LauncherServiceImplTest {
   public void shouldRejectFailureToGetJwe() throws Exception {
     QuestionnaireIdDTO qdto = makeQuestionnaireDto();
     CaseContainerDTO ccdto = makeCaseDetails();
-    when(appConfig.getKeystore()).thenReturn(keyStoreEncryption);
 
     when(eqLaunchService.getEqLaunchJwe(any())).thenThrow(new CTPException(Fault.BAD_REQUEST));
     when(caseServiceClient.getCaseById(eq(A_CASE_ID), eq(false))).thenReturn(ccdto);
