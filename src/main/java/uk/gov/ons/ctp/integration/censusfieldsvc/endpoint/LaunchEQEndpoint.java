@@ -102,7 +102,7 @@ public final class LaunchEQEndpoint implements CTPEndpoint {
       log.with("errorMessage", e.getMessage()).warn("Could not produce error hash for diagnostic");
       // carry on regardless - main functionality unaffected
     }
-    log.with("incident", sha256Hex).error("Failed to launch EQ", exception);
+    log.with("incident", sha256Hex).with("reason", reason).error("Failed to launch EQ", exception);
     redirectAttribs.addFlashAttribute("reason", reason);
     return new RedirectView("/error", true);
   }
