@@ -149,7 +149,7 @@ public class CensusFieldSvcApplication {
 
   @Bean
   @Qualifier("caseServiceClient")
-  public CaseServiceClientServiceImpl caseServiceClient() {
+  public CaseServiceClientServiceImpl caseServiceClient() throws CTPException {
     RestClientConfig clientConfig = appConfig.getCaseServiceSettings().getRestClientConfig();
     RestClient restHelper = new RestClient(clientConfig, httpErrorMapping, defaultHttpStatus);
     CaseServiceClientServiceImpl csClientServiceImpl = new CaseServiceClientServiceImpl(restHelper);

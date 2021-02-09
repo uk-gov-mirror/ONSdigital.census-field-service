@@ -155,7 +155,12 @@ case-service-settings:
     scheme: http
     host: localhost
     port: 8161
-  
+    connection-manager-default-max-per-route: 200
+    connection-manager-max-total: 200
+    connectTimeoutMillis: 0
+    connectionRequestTimeoutMillis: 0
+    socketTimeoutMillis: 0
+
 circuit-breaker:
   timeout: 4
   
